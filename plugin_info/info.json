@@ -10,7 +10,7 @@
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
 	"changelog" : "https://github.com/KiboOst/jeedom-jeelog/blob/master/docs/fr_FR/changelog.md",
-	"documentation" : "https://github.com/KiboOst/jeedom-jeelog/blob/master/docs/#language#",
+	"documentation" : "https://github.com/KiboOst/jeedom-jeelog/blob/master/docs/#language#/index.md",
 	"forum_link" : "https://www.jeedom.com/forum/viewtopic.php?f=144&t=35997",
 	"language" : ["fr_FR"],
 	"description" : "Plugin pour visualiser ce qui se passe (mouvements, lumières etc) sur les dernières heures.",
