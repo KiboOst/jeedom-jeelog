@@ -5,7 +5,7 @@
 	"licence" : "AGPL",
 	"author" : "KiboOst",
 	"require" : "3.0",
-	"category" : "Monitoring",
+	"category" : "monitoring",
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
