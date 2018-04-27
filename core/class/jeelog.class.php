@@ -299,7 +299,7 @@ class jeelogCmd extends cmd {
         try
         {
             //read scenario log:
-            $logPath = '/var/www/html/log/scenarioLog/scenario'.$scID.'.log';
+            $logPath = dirname(__FILE__).'/../../../../log/scenarioLog/scenario'.$scID.'.log';
             if (!file_exists($logPath)) return $events;
             $file = fopen($logPath, 'r');
             $data = fread($file, filesize($logPath));
