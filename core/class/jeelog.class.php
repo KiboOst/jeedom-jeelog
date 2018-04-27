@@ -81,7 +81,7 @@ class jeelog extends eqLogic {
     public function postSave() {
         $refresh = $this->getCmd(null, 'refresh');
         if (!is_object($refresh)) {
-            $refresh = new virtualCmd();
+            $refresh = new jeelogCmd();
             $refresh->setLogicalId('refresh');
             $refresh->setIsVisible(1);
             $refresh->setName(__('Rafraichir', __FILE__));
@@ -122,6 +122,10 @@ class jeelog extends eqLogic {
         $data = $this->getConfiguration('data', 0);
         $replace['#jeelogData#'] = $data;
       
+      	$version = $_version;
+      
+      	if ($_version == 'dplan') $version = 'dashboard';
+      
       	if ($_version == 'dashboard')
         {
           $replace['#width#'] = $this->getConfiguration('dashboardWidth', 360).'px';
@@ -139,7 +143,7 @@ class jeelog extends eqLogic {
           $replace['#height#'] = '500px';
         }
       
-        $html = template_replace($replace, getTemplate('core', $_version, 'jeelog', 'jeelog'));
+        $html = template_replace($replace, getTemplate('core', $version, 'jeelog', 'jeelog'));
         //cache::set('widgetHtml' . $_version . $this->getId(), $html, 0);
         return $html;
     }

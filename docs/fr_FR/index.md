@@ -26,6 +26,7 @@ Vous pouvez également paramétrer:
 Une fois l'équipement crée, allez sur l'onglet *Logs* pour paramétrer ce que le log va afficher.
 
 C'est ici que vous allez ajouter les commandes info et les scénarios que vous souhaitez, et configurer le nom sous lequel ils apparaitront. Pour les commandes info, il faut définir le type d'info (lumière, porte, etc).
+Vous pouvez monter/descendre les éléments de cette liste pour plus de clarté (drag/drop).
 
 - Pour que ces commandes apparraissent dans votre log, il faut qu'elles soient historisées sur la période. De la même manière que pour les voir dans *Analyse > Historique*.
 - L'affichage des scénarios se fait par le log de chaque scénario demandé. Si le log est vidé, il n'apparaitra donc plus.
