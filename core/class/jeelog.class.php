@@ -274,21 +274,15 @@ class jeelogCmd extends cmd {
                   $var = explode(' | ', $type);
                   $states = array($var[0], $var[1]);
                   if ($isInversed) $states = array_reverse($states);
-                }
-              
-                if (($type=='Eteint | Allumé') || ($type=='Off | On'))
-                {
-                  	//Don't report duplicated values 1 or 2 sec after
-                    if ((strtotime($date) <= strtotime($prevDate)+60) and ($prevValue == $value)) continue;
-                    
-                    if ($value >= 1) array_push($events, array($date, $name.' '.$states[1]));
-                    else array_push($events, array($date, $name.' '.$states[0]));
-                }
-              
-                if ($type=='Fermeture | Ouverture')
-                {
-                    if ($value >= 1) array_push($events, array($date, $name.' '.$states[0]));
-                    else array_push($events, array($date, $name.' '.$states[1]));
+                  
+                  if (($type=='Eteint | Allumé') || ($type=='Off | On'))
+                  {
+                      //Don't report duplicated values 1 or 2 sec after
+                      if ((strtotime($date) <= strtotime($prevDate)+60) and ($prevValue == $value)) continue;
+                  }
+                  
+                  if ($value >= 1) array_push($events, array($date, $name.' '.$states[1]));
+                  else array_push($events, array($date, $name.' '.$states[0]));
                 }
 
                 $prevDate = $date;
