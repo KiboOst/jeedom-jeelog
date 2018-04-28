@@ -89,7 +89,7 @@ function getScenarosList()
 }
 
 
-function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true)
+function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true, _isInversed=false)
 {
     if (_type == 'Scenar') {
         button = 'btn-danger'
@@ -99,11 +99,11 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
     }
 
     var div = '<div class="' + _type + ' log col-sm-12" type="'+_type+'" style="padding-top:5px">'
+    div += '<div class="form-group">'
+    div += '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" style="width:20px" title="{{Décocher pour desactiver le log}}" />'
+    div += '<div class="col-sm-5">'
 
     if (_type == 'Scenar') {
-            div += '<div class="form-group">'
-            div += '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" title="{{Décocher pour desactiver le log}}" />'
-            div += '<div class="col-sm-5">'
             div += '<div class="input-group input-group-sm">'
 
             div += '<span class="input-group-btn">'
@@ -120,16 +120,13 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
             div += '</div>'
             div += '</div>'
 
-            div += '<div class="col-sm-3">'
+            div += '<div class="col-sm-2">'
             div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
             div += '</div>'
         div += '</div>'
     }
 
     if (_type == 'Cmd') {
-        div += '<div class="form-group">'
-        div += '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" title="{{Décocher pour desactiver le log}}" />'
-        div += '<div class="col-sm-5">'
             div += '<div class="input-group">'
             div += '<span class="input-group-btn">'
             div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
@@ -144,7 +141,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
             div += '</div>'
         div += '</div>'
 
-        div += '<div class="col-sm-3">'
+        div += '<div class="col-sm-2">'
         div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
         div += '</div>'
 
@@ -153,6 +150,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
                 div += '<option value="'+CMD_TYPE[i]+'">'+CMD_TYPE[i]+'</option>'
             }
         div += '</select>'
+        div += '<label style="padding-left:20px"><input type="checkbox" id="isInversed" class="expressionAttr col-sm-1" data-l1key="options" />Inverser</label>'
     }
 
     div += '</div>'
@@ -169,8 +167,10 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
     if (_type == 'Cmd') {
         if (_argName != "") _el.find('.log:last').find("#argName").val(_argName)
         if (_CmdType) _el.find('.log:last').find("#CmdType").val(_CmdType)
+        if (_isInversed) _el.find('.log:last').find("#isInversed").prop('checked', _isInversed)
     }
     if (_displayName != "") _el.find('.log:last').find("#displayName").val(_displayName)
+      
     _el.find('.log:last').find("#isEnable").prop('checked', _isEnable)
 
 
@@ -193,6 +193,7 @@ function saveEqLogic(_eqLogic) {
             log.argName = $(this).find("#argName").val()
             log.displayName = $(this).find("#displayName").val()
             log.isEnable =  $(this).find("#isEnable").prop('checked')
+            log.isInversed =  $(this).find("#isInversed").prop('checked')
             if (log.argName != "") _eqLogic.configuration.logs.push(log)
         }
         if (log.type == 'Scenar')
@@ -209,7 +210,7 @@ function saveEqLogic(_eqLogic) {
 
 
 function printEqLogic(_eqLogic) {
-    console.log(_eqLogic.configuration)
+    //console.log(_eqLogic.configuration)
 
     $('#div_logs').empty()
     SCENARS_LIST = getScenarosList()
@@ -217,6 +218,7 @@ function printEqLogic(_eqLogic) {
     CMD_TYPE = []
     CMD_TYPE.push("Eteint | Allumé")
     CMD_TYPE.push("Fermeture | Ouverture")
+    CMD_TYPE.push("Off | On")
     CMD_TYPE.push("Presence")
     CMD_TYPE.push("Valeur")
 
@@ -226,7 +228,8 @@ function printEqLogic(_eqLogic) {
         _argName = _eqLogic.configuration.logs[i].argName
         _displayName = _eqLogic.configuration.logs[i].displayName
         _isEnable = _eqLogic.configuration.logs[i].isEnable
-        addLog(_argName, _type, _CmdType, _displayName, _isEnable);
+        _isInversed = _eqLogic.configuration.logs[i].isInversed
+        addLog(_argName, _type, _CmdType, _displayName, _isEnable, _isInversed);
     }
 
     $("#div_logs").sortable();
