@@ -33,7 +33,7 @@ Vous retrouvez donc:
 
 Vous pouvez monter/descendre les éléments de cette liste pour plus de clarté (drag/drop).
 
-<img src="../images/log.jpg" width="450">
+<img src="../images/log_02.jpg" width="450">
 
 ## Affichage
 
