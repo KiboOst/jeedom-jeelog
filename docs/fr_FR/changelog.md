@@ -1,9 +1,15 @@
 # Changelog
 
-Liste des versions du plugin JeeLog.
+*[Documentation](index.md)*
 
-*[Retour à la documentation](index.md)*
+### 2018-04-28 12:10
 
-## Version du 27 avril 2018
+- Ajout de l'option Inverser pour les commandes.
+- Ajout 'Off | On' pour les commandes.
+- Compatibilité avec les Design.
+- Bugfix cheming nginx (merci Nebz !).
+- Corrections mineures.
 
-- Première version publique (Beta)
+### 2018-04-27 12:41
+
+- Première version publique (Beta).
