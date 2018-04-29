@@ -247,7 +247,7 @@ class jeelogCmd extends cmd {
 
     public function getEqActivity($cmdId, $name="", $type, $isInversed=false, $from, $now, $events)
     {
-        if ($name == "") $name = cmd::cmdToHumanReadable($argName);
+        if ($name == "") $name = cmd::cmdToHumanReadable($cmdId);
         $cmdId = str_replace('#', '', $cmdId);
 
         try
