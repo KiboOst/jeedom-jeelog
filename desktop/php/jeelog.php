@@ -152,10 +152,10 @@ foreach ($eqLogics as $eqLogic) {
       </fieldset>
     </form>
   </div>
-
-
+  
 
     <div role="tabpanel" class="tab-pane" id="logtab">
+      <a class="btn btn-default pull-left" id="bt_importinfos" style="margin-top: 5px;" ><i class="fa fa-cog"></i> {{Import infos}}</a>
       <a class="btn btn-success pull-right" id="bt_addScenario" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Scenario}}</a>
       <a class="btn btn-success pull-right" id="bt_addCmd" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Commande}}</a><br/><br/>
 
