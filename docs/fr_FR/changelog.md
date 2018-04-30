@@ -4,7 +4,7 @@
 
 ### 2018-04-30
 
-- Ajout d'une d'importation de commandes infos.
+- Ajout d'une option d'importation de commandes infos.
 - Bugfix affichage de la checkbox Inverser sous Chrome.
 
 
