@@ -2,6 +2,12 @@
 
 *[Documentation](index.md)*
 
+### 2018-04-30
+
+- Ajout d'une d'importation de commandes infos.
+- Bugfix affichage de la checkbox Inverser sous Chrome.
+
+
 ### 2018-04-29
 
 - Ajout de l'option Inverser pour les commandes.
