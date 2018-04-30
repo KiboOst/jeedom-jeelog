@@ -59,7 +59,6 @@ $('#bt_import').on('click', function ()
 {
     $('#md_modal .log').each(function ()
     {
-        log = {}
         if ($(this).find("#isEnable").prop('checked'))
         {
           name = $(this).find("#cmdName").val()
