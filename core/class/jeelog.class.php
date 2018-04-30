@@ -239,8 +239,11 @@ class jeelogCmd extends cmd {
         }
 
         //final log:
-      	$now = date("Y-m-d H:i:s");
-      	$data = $now.' | //Log mis à jour'.'<br>'.$data;
+      	if ($eqLogic->getConfiguration('showUpdate'))
+        {
+      		$now = date("Y-m-d H:i:s");
+      		$data = $now.' | //Log mis à jour'.'<br>'.$data;
+        }
         $eqLogic->setConfiguration('data', $data);
         $eqLogic->save();
 
