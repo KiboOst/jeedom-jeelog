@@ -203,12 +203,13 @@ class jeelogCmd extends cmd {
                 $type = $log['type'];
                 $argName = $log['argName']; //id of cmd info or scenario
                 $isEnable = $log['isEnable'];
+                $isInversed = $log['isInversed'];
 
                 if ($type == 'Cmd' AND $isEnable)
                 {
                     $cmdType = $log['CmdType'];
                     $displayName = $log['displayName'];
-                    $events = $this->getEqActivity($argName, $displayName, $cmdType, $from, $now, $events);
+                    $events = $this->getEqActivity($argName, $displayName, $cmdType, $isInversed, $from, $now, $events);
                 }
 
                 if ($type == 'Scenar' AND $isEnable)
@@ -244,9 +245,9 @@ class jeelogCmd extends cmd {
         $eqLogic->refreshWidget();
     }
 
-    public function getEqActivity($cmdId, $name="", $type, $from, $now, $events)
+    public function getEqActivity($cmdId, $name="", $type, $isInversed=false, $from, $now, $events)
     {
-        if ($name == "") $name = cmd::cmdToHumanReadable($argName);
+        if ($name == "") $name = cmd::cmdToHumanReadable($cmdId);
         $cmdId = str_replace('#', '', $cmdId);
 
         try
@@ -263,22 +264,27 @@ class jeelogCmd extends cmd {
                 {
                     if ($value >= 1) array_push($events, array($date, $type.' '.$name));
                 }
-                if ($type=='Eteint | Allumé')
-                {
-                    //Don't report duplicated values 1 or 2 sec after
-                    if ((strtotime($date) <= strtotime($prevDate)+60) and ($prevValue == $value)) continue;
-                    if ($value >= 1) array_push($events, array($date, $name.' Allumé'));
-                    else array_push($events, array($date, $name.' Eteint'));
-                }
-                if ($type=='Fermeture | Ouverture')
-                {
-                    if ($value >= 1) array_push($events, array($date, 'Ouverture '.$name));
-                    else array_push($events, array($date, 'Fermeture '.$name));
-                }
                 if ($type=='Valeur')
                 {
                     array_push($events, array($date, $name.' | '.$value));
                 }
+              
+              	if (strstr($type, ' | '))
+                {
+                  $var = explode(' | ', $type);
+                  $states = array($var[0], $var[1]);
+                  if ($isInversed) $states = array_reverse($states);
+                  
+                  if (($type=='Eteint | Allumé') || ($type=='Off | On'))
+                  {
+                      //Don't report duplicated values 1 or 2 sec after
+                      if ((strtotime($date) <= strtotime($prevDate)+60) and ($prevValue == $value)) continue;
+                  }
+                  
+                  if ($value >= 1) array_push($events, array($date, $name.' '.$states[1]));
+                  else array_push($events, array($date, $name.' '.$states[0]));
+                }
+
                 $prevDate = $date;
                 $prevValue = $value;
             }
@@ -329,19 +335,19 @@ class jeelogCmd extends cmd {
                     if (strtotime($date) < strtotime($from)) return $events; //too old!
 
                     $startedBy = '';
-                    if (stripos($line, 'sur programmation') !== false) $startedBy = ' | Programmation';
+                    if (strstr($line, 'sur programmation')) $startedBy = ' | Programmation';
 
-                    if (stripos($line, 'Lancement provoque par le scenario') !== false)
+                    if (strstr($line, 'Lancement provoque par le scenario'))
                     {
                         $var = explode('par le scenario  : ', $line)[1];
                         $var = explode("'.", $var)[0];
                         $startedBy = ' Par scenario: '.$var;
                     }
-                    else if (stripos($line, 'manuellement') !== false) $startedBy = ' | Manuel';
+                    else if (strstr($line, 'manuellement')) $startedBy = ' | Manuel';
 
-                    if (stripos($line, 'en mode synchrone') !== false) $startedBy = ' | Synchrone';
+                    if (strstr($line, 'en mode synchrone')) $startedBy = ' | Synchrone';
 
-                    if (stripos($line, 'automatiquement sur evenement') !== false)
+                    if (strstr($line, 'automatiquement sur evenement'))
                     {
                         $var = explode('evenement venant de : ', $line)[1];
                         $var = explode("'.", $var)[0];
