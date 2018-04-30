@@ -10,8 +10,11 @@ Après installation du plugin, il vous suffit de l’activer.
 Il apparaitra alors dans le menu *Plugins > Monitoring*
 
 ## Ajouter un log
-Cliquez simplement sur Ajouter, puis nommé votre équipement log.
-<img src="../images/equipement.jpg" width="450">
+Cliquez simplement sur Ajouter, puis nommez votre équipement log.
+
+<p align="center">
+  <img src="../images/equipement.jpg" width="450">
+</p>
 
 Vous pouvez également paramétrer:
 - un cron d’auto-actualisation.
@@ -33,20 +36,30 @@ Vous retrouvez donc:
 
 Vous pouvez monter/descendre les éléments de cette liste pour plus de clarté (drag/drop).
 
-<img src="../images/log_02.jpg" width="450">
+- Pour que ces commandes apparraissent dans votre log, il faut qu'elles soient historisées sur la période. De la même manière que pour les voir dans *Analyse > Historique*.
+- L'affichage des scénarios se fait par le log de chaque scénario demandé. Si le log est vidé, il n'apparaitra donc plus.
+<p align="center">
+  <img src="../images/log_02.jpg" width="450">
+</p>
 
 ## Affichage
 
 Voici quelques illustrations du résultat, avec les paramètres par défaut.
 
 Dashboard:
-<img src="../images/dashboard.jpg" width="450">
+<p align="center">
+  <img src="../images/dashboard.jpg" width="450">
+</p>
 
 Vue:
-<img src="../images/dview.jpg" width="450">
+<p align="center">
+  <img src="../images/dview.jpg" width="450">
+</p>
 
 Vue sur mobile:
-<img src="../images/mview.jpg" width="450">
+<p align="center">
+  <img src="../images/mview.jpg" width="450">
+</p>
 
 
 ## Changelog
