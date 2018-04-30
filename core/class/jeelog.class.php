@@ -235,10 +235,12 @@ class jeelogCmd extends cmd {
         $data = '';
         foreach ($events as $event)
         {
-            $data .= $event[0].' | '.$event[1]."<br>";
+            $data .= $event[0].' | '.$event[1].'<br>';
         }
 
         //final log:
+      	$now = date("Y-m-d H:i:s");
+      	$data = $now.' | //Log mis à jour'.'<br>'.$data;
         $eqLogic->setConfiguration('data', $data);
         $eqLogic->save();
 
