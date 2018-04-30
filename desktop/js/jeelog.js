@@ -50,6 +50,27 @@ $("#bt_addScenario").off('click').on( 'click',function () {
     addLog('', 'Scenar')
 })
 
+//Import de commandes:
+$('#bt_importinfos').on('click', function () {
+    $('#md_modal').dialog({title: "{{Importation de commande infos}}"});
+    $('#md_modal').load('index.php?v=d&plugin=jeelog&modal=infos.import&id=' + $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
+});
+$('#bt_import').on('click', function ()
+{
+    $('#md_modal .log').each(function ()
+    {
+        log = {}
+        if ($(this).find("#isEnable").prop('checked'))
+        {
+          name = $(this).find("#cmdName").val()
+          addLog(name, 'Cmd')
+        }
+    });
+    $('#md_modal').dialog("close")
+});
+
+
+
 //===========
 function getScenarosList()
 {
@@ -87,7 +108,6 @@ function getScenarosList()
     })
     return LIST
 }
-
 
 function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true, _isInversed=false)
 {
