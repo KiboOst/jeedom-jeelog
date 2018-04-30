@@ -130,6 +130,13 @@ foreach ($eqLogics as $eqLogic) {
         </div>
         
         <div class="form-group expertModeVisible">
+          <label class="col-sm-2 control-label">{{Afficher Mis à jour du log}}</label>
+          <div class="col-sm-2">
+           <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="showUpdate" checked/>
+          </div>
+        </div>
+        
+        <div class="form-group expertModeVisible">
           <label class="col-sm-2 control-label">{{Dashboard width/height}}</label>
           <div class="col-sm-1">
            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="dashboardWidth" placeholder="360"/>
