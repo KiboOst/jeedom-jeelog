@@ -6,6 +6,7 @@
 
 - Ajout d'une option d'importation de commandes infos.
 - Bugfix affichage de la checkbox Inverser sous Chrome.
+- Nouvelle option pour afficher ou non la date/heure de mise à jour du log.
 
 
 ### 2018-04-29
