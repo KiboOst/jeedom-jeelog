@@ -72,7 +72,7 @@ $('#bt_import').on('click', function ()
 
 
 //===========
-function getScenarosList()
+function getScenariosList()
 {
     LIST = []
     LIST.push([0,''])
@@ -170,7 +170,10 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
                 div += '<option value="'+CMD_TYPE[i]+'">'+CMD_TYPE[i]+'</option>'
             }
         div += '</select>'
-        div += '<label style="padding-left:20px"><input type="checkbox" id="isInversed" class="expressionAttr col-sm-1" data-l1key="options" />Inverser</label>'
+        div += '<div class="col-sm-2">'
+        div += '<input type="checkbox" id="isInversed" class="expressionAttr" data-l1key="options" />'
+        div += '<label class="control-label" style="padding-left:20px">Inverser</label>'
+        div += '</div>'
     }
 
     div += '</div>'
@@ -233,7 +236,7 @@ function printEqLogic(_eqLogic) {
     //console.log(_eqLogic.configuration)
 
     $('#div_logs').empty()
-    SCENARS_LIST = getScenarosList()
+    SCENARS_LIST = getScenariosList()
 
     CMD_TYPE = []
     CMD_TYPE.push("Eteint | Allumé")
