@@ -3,6 +3,7 @@
 *[Documentation](index.md)*
 
 ### 2018-05-01
+  - Ajout d'une option pour le format de date dans le log (format php).
   - Import infos: bugfix #cmd#
   - Import infos: Ajout d'un champ Rechercher
 
