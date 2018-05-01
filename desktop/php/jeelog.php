@@ -74,7 +74,7 @@ foreach ($eqLogics as $eqLogic) {
               <label class="col-sm-3 control-label">{{Nom de l'équipement jeelog}}</label>
               <div class="col-sm-3">
                   <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-                  <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement jeelog}}"/>
+                  <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l\'équipement jeelog}}"/>
               </div>
           </div>
           <div class="form-group">
@@ -120,6 +120,10 @@ foreach ($eqLogics as $eqLogic) {
           <div class="col-sm-1">
             <i class="fa fa-question-circle cursor floatright" id="bt_cronGenerator"></i>
           </div>
+          <label class="col-sm-2 control-label">{{Afficher Mise à jour du log}}</label>
+          <div class="col-sm-2">
+           <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="showUpdate" checked/>
+          </div>
         </div>
 
         <div class="form-group expertModeVisible">
@@ -127,12 +131,9 @@ foreach ($eqLogics as $eqLogic) {
           <div class="col-sm-2">
            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="loglasttime" placeholder="8"/>
           </div>
-        </div>
-        
-        <div class="form-group expertModeVisible">
-          <label class="col-sm-2 control-label">{{Afficher Mis à jour du log}}</label>
+          <label class="col-sm-2 control-label">{{Format de date (php)}}</label>
           <div class="col-sm-2">
-           <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="showUpdate" checked/>
+           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="timeFormat" placeholder="Y-m-d H:i:s"/>
           </div>
         </div>
         
