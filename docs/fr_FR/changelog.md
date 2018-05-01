@@ -2,6 +2,11 @@
 
 *[Documentation](index.md)*
 
+### 2018-05-01
+  - Import infos: bugfix #cmd#
+  - Import infos: Ajout d'un champ Rechercher
+
+
 ### 2018-04-30
 
 - Ajout d'une option d'importation de commandes infos.
