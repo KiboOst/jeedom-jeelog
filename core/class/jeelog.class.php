@@ -221,6 +221,7 @@ class jeelogCmd extends cmd {
                 if ($type == 'Scenar' AND $isEnable)
                 {
                     $sc = scenario::byId($argName);
+                    if (!is_object($sc)) continue;
                     $displayName = $log['displayName'];
                     log::add('jeelog', 'debug', 'execute log Scenar, displayName:'.$displayName);
                     $events = $this->getScenarioActivity($sc, $displayName, $from, $events);
@@ -266,10 +267,7 @@ class jeelogCmd extends cmd {
         if ($l > 60000)
         {
             log::add('jeelog', 'error', 'Donnée de log trop longue pour enregistrement de configuration. Vérifiez les répétitions sur vos historiques.');
-            $eqLogic->setConfiguration('data', '*Error : Trop de répétitions de valeur*');
-            $eqLogic->save();
-            $eqLogic->refreshWidget();
-            return true;
+            $data = '*Error : Trop de répétitions de valeur*';
         }
 
         $eqLogic->setConfiguration('data', $data);
@@ -282,6 +280,8 @@ class jeelogCmd extends cmd {
     {
         if ($name == "") $name = cmd::cmdToHumanReadable($cmdId);
         $cmdId = str_replace('#', '', $cmdId);
+        $cmd = cmd::byId($cmdId);
+        if (!is_object($cmd)) return $events;
 
         $_events = $events;
 
@@ -289,8 +289,7 @@ class jeelogCmd extends cmd {
         {
             log::add('jeelog', 'debug', 'getEqActivity: name:'.$name);
 
-            $isHistorized = cmd::byId($cmdId)->getIsHistorized();
-            log::add('jeelog', 'debug', 'getEqActivity: isHistorized: '.$isHistorized);
+            $isHistorized = $cmd->getIsHistorized();
             if ($isHistorized != 1)
             {
                 log::add('jeelog', 'error', 'getEqActivity ERROR: Commande non historisée: '.$name);
