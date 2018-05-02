@@ -274,6 +274,9 @@ class jeelogCmd extends cmd {
         try
         {
             log::add('jeelog', 'debug', 'getEqActivity: name:'.$name);
+
+            $isHistorized = cmd::byId($cmdId)->getIsHistorized();
+            log::add('jeelog', 'debug', 'getEqActivity: isHistorized: '.$isHistorized);
             $result = history::all($cmdId, $from, $now);
             $s = print_r($result, 1);
             log::add('jeelog', 'debug', 'getEqActivity: result:'.$s);
