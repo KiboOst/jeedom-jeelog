@@ -92,7 +92,7 @@ class jeelog extends eqLogic {
         $refresh->setSubType('other');
         $refresh->setEqLogic_id($this->getId());
         $refresh->save();
-      
+
       //echo $this->getConfiguration();
     }
 
@@ -123,11 +123,11 @@ class jeelog extends eqLogic {
 
         $data = $this->getConfiguration('data', 0);
         $replace['#jeelogData#'] = $data;
-      
+
         $version = $_version;
-      
+
         if ($_version == 'dplan') $version = 'dashboard';
-      
+
         if ($_version == 'dashboard')
         {
           $replace['#width#'] = $this->getConfiguration('dashboardWidth', 360).'px';
@@ -138,13 +138,13 @@ class jeelog extends eqLogic {
           $replace['#width#'] = $this->getConfiguration('viewWidth', 450).'px';
           $replace['#height#'] = $this->getConfiguration('viewHeight', 560).'px';
         }
-      
+
         if ($_version == 'mview')
         {
           $replace['#width#'] = '97%; min-width:97%;';
           $replace['#height#'] = '500px';
         }
-      
+
         $html = template_replace($replace, getTemplate('core', $version, 'jeelog', 'jeelog'));
         //cache::set('widgetHtml' . $_version . $this->getId(), $html, 0);
         return $html;
@@ -188,7 +188,7 @@ class jeelogCmd extends cmd {
 
         $logDelta = $eqLogic->getConfiguration('loglasttime', 8);
         $logDelta = $logDelta * 3600;
-      
+
         $timeFormat = $eqLogic->getConfiguration('timeFormat', 'Y-m-d H:i:s');
 
         $timezone = 'Europe/Paris';
@@ -196,6 +196,8 @@ class jeelogCmd extends cmd {
         $now = $var->format('Y-m-d H:i:s');
         $from = $var->sub(new DateInterval('PT'.$logDelta.'S'));
         $from = $from->format('Y-m-d H:i:s');
+
+        log::add('jeelog', 'debug', '______________execute starting '.$from.' '.$now.' '.$timeFormat);
 
         $events = array(); //stock all events to sort them later by time
 
@@ -207,7 +209,7 @@ class jeelogCmd extends cmd {
                 $argName = $log['argName']; //id of cmd info or scenario
                 $isEnable = $log['isEnable'];
                 $isInversed = $log['isInversed'];
-              
+
                 if ($type == 'Cmd' AND $isEnable)
                 {
                     $cmdType = $log['CmdType'];
@@ -259,16 +261,28 @@ class jeelogCmd extends cmd {
 
         $s = print_r($data, 1);
         log::add('jeelog', 'debug', 'execute __resulting data to configuration__: '.$s);
+
+        $l = strlen($data);
+        if ($l > 60000)
+        {
+            log::add('jeelog', 'error', 'Donnée de log trop longue pour enregistrement de configuration. Vérifiez les répétitions sur vos historiques.');
+            $eqLogic->setConfiguration('data', '*Error : Trop de répétitions de valeur*');
+            $eqLogic->save();
+            $eqLogic->refreshWidget();
+            return true;
+        }
+
         $eqLogic->setConfiguration('data', $data);
         $eqLogic->save();
         $eqLogic->refreshWidget();
+        return true;
     }
 
     public function getEqActivity($cmdId, $name="", $type, $isInversed=false, $from, $now, $events)
     {
         if ($name == "") $name = cmd::cmdToHumanReadable($cmdId);
         $cmdId = str_replace('#', '', $cmdId);
-      
+
         $_events = $events;
 
         try
@@ -282,12 +296,12 @@ class jeelogCmd extends cmd {
                 log::add('jeelog', 'error', 'getEqActivity ERROR: Commande non historisée: '.$name);
                 return $events;
             }
-            
+
             $result = history::all($cmdId, $from, $now);
             $s = print_r($result, 1);
             log::add('jeelog', 'debug', 'getEqActivity: result:'.$s);
             if (count($result) == 0 || !is_array($result)) return $_events;
-          
+
             $prevDate = $from;
             $prevValue = null;
             for ($i = 0; $i < count($result); $i++)
@@ -303,19 +317,19 @@ class jeelogCmd extends cmd {
                 {
                     array_push($events, array($date, $name.' | '.$value));
                 }
-              
+
                 if (strstr($type, ' | '))
                 {
                   $var = explode(' | ', $type);
                   $states = array($var[0], $var[1]);
                   if ($isInversed) $states = array_reverse($states);
-                  
+
                   if (($type=='Eteint | Allumé') || ($type=='Off | On'))
                   {
                       //Don't report duplicated values 1 or 2 sec after
                       if ((strtotime($date) <= strtotime($prevDate)+60) and ($prevValue == $value)) continue;
                   }
-                  
+
                   if ($value >= 1) array_push($events, array($date, $name.' '.$states[1]));
                   else array_push($events, array($date, $name.' '.$states[0]));
                 }
@@ -338,7 +352,7 @@ class jeelogCmd extends cmd {
     {
         $scID = $sc->getId();
         if ($name == "") $name = $sc->getHumanName();
-      
+
         $_events = $events;
 
         try
