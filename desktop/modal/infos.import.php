@@ -34,6 +34,9 @@ if (!isConnect('admin')) {
     if ($cmd->getType() == 'info')
     {
         $name = '#'.$cmd->getHumanName().'#';
+        $isHistorized = $cmd->getIsHistorized();
+        if ($isHistorized == 1) $historized = 'Historisée';
+        else $historized = 'NON Historisée!';
         
         $div = '<div class="log col-sm-12" style="display:;padding-top:5px">';
         $div .= '<div class="form-group">';
@@ -41,6 +44,8 @@ if (!isConnect('admin')) {
         $div .= '<div class="col-sm-10">';
         $div .= '<input type="text" class="form-control" id="cmdName"  value="'.$name.'" readonly />';
         $div .= '</div>';
+        $div .= '<label>'.$historized.'</label>';
+
         $div .= '</div>';
         $div .= '</div>';
         echo $div;
