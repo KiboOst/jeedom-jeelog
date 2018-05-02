@@ -57,6 +57,7 @@ foreach ($eqLogics as $eqLogic) {
 <div class="col-lg-10 col-md-9 col-sm-8 eqLogic" style="border-left: solid 1px #EEE; padding-left: 25px;display: none;">
   <a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder}}</a>
   <a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer}}</a>
+  <a class="btn btn-default eqLogicAction pull-right" data-action="copy"><i class="fa fa-files-o"></i> {{Dupliquer}}</a>
   <a class="btn btn-default eqLogicAction pull-right" data-action="configure"><i class="fa fa-cogs"></i> {{Configuration avancée}}</a>
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fa fa-arrow-circle-left"></i></a></li>
@@ -73,7 +74,7 @@ foreach ($eqLogics as $eqLogic) {
               <label class="col-sm-3 control-label">{{Nom de l'équipement jeelog}}</label>
               <div class="col-sm-3">
                   <input type="text" class="eqLogicAttr form-control" data-l1key="id" style="display : none;" />
-                  <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l'équipement jeelog}}"/>
+                  <input type="text" class="eqLogicAttr form-control" data-l1key="name" placeholder="{{Nom de l\'équipement jeelog}}"/>
               </div>
           </div>
           <div class="form-group">
@@ -119,12 +120,20 @@ foreach ($eqLogics as $eqLogic) {
           <div class="col-sm-1">
             <i class="fa fa-question-circle cursor floatright" id="bt_cronGenerator"></i>
           </div>
+          <label class="col-sm-2 control-label">{{Afficher Mise à jour du log}}</label>
+          <div class="col-sm-2">
+           <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="showUpdate" checked/>
+          </div>
         </div>
 
         <div class="form-group expertModeVisible">
           <label class="col-sm-2 control-label">{{Afficher (heures)}}</label>
           <div class="col-sm-2">
            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="loglasttime" placeholder="8"/>
+          </div>
+          <label class="col-sm-2 control-label">{{Format de date (php)}}</label>
+          <div class="col-sm-2">
+           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="timeFormat" placeholder="Y-m-d H:i:s"/>
           </div>
         </div>
         
@@ -151,10 +160,10 @@ foreach ($eqLogics as $eqLogic) {
       </fieldset>
     </form>
   </div>
-
-
+  
 
     <div role="tabpanel" class="tab-pane" id="logtab">
+      <a class="btn btn-default pull-left" id="bt_importinfos" style="margin-top: 5px;" ><i class="fa fa-cog"></i> {{Import infos}}</a>
       <a class="btn btn-success pull-right" id="bt_addScenario" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Scenario}}</a>
       <a class="btn btn-success pull-right" id="bt_addCmd" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Commande}}</a><br/><br/>
 

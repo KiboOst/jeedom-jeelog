@@ -62,6 +62,8 @@ class jeelog extends eqLogic {
     public function refresh() {
         foreach ($this->getCmd() as $cmd)
         {
+            $s = print_r($cmd, 1);
+            log::add('jeelog', 'debug', 'refresh  cmd: '.$s);
             $cmd->execute();
         }
     }
@@ -90,7 +92,7 @@ class jeelog extends eqLogic {
         $refresh->setSubType('other');
         $refresh->setEqLogic_id($this->getId());
         $refresh->save();
-      
+
       //echo $this->getConfiguration();
     }
 
@@ -121,28 +123,28 @@ class jeelog extends eqLogic {
 
         $data = $this->getConfiguration('data', 0);
         $replace['#jeelogData#'] = $data;
-      
-      	$version = $_version;
-      
-      	if ($_version == 'dplan') $version = 'dashboard';
-      
-      	if ($_version == 'dashboard')
+
+        $version = $_version;
+
+        if ($_version == 'dplan') $version = 'dashboard';
+
+        if ($_version == 'dashboard')
         {
           $replace['#width#'] = $this->getConfiguration('dashboardWidth', 360).'px';
           $replace['#height#'] = $this->getConfiguration('dashboardHeight', 144).'px';
         }
-      	if ($_version == 'dview')
+        if ($_version == 'dview')
         {
           $replace['#width#'] = $this->getConfiguration('viewWidth', 450).'px';
           $replace['#height#'] = $this->getConfiguration('viewHeight', 560).'px';
         }
-      
-      	if ($_version == 'mview')
+
+        if ($_version == 'mview')
         {
           $replace['#width#'] = '97%; min-width:97%;';
           $replace['#height#'] = '500px';
         }
-      
+
         $html = template_replace($replace, getTemplate('core', $version, 'jeelog', 'jeelog'));
         //cache::set('widgetHtml' . $_version . $this->getId(), $html, 0);
         return $html;
@@ -181,18 +183,21 @@ class jeelogCmd extends cmd {
 
 
     public function execute($_options = array()) {
-        //message::add('jeelog', 'execute start');
         $eqLogic = $this->getEqLogic();
         $logs = $eqLogic->getConfiguration('logs', "Pas d'activité récente");
 
         $logDelta = $eqLogic->getConfiguration('loglasttime', 8);
         $logDelta = $logDelta * 3600;
 
+        $timeFormat = $eqLogic->getConfiguration('timeFormat', 'Y-m-d H:i:s');
+
         $timezone = 'Europe/Paris';
         $var = new DateTime('NOW', new DateTimeZone($timezone));
         $now = $var->format('Y-m-d H:i:s');
         $from = $var->sub(new DateInterval('PT'.$logDelta.'S'));
         $from = $from->format('Y-m-d H:i:s');
+
+        log::add('jeelog', 'debug', '______________execute starting '.$from.' '.$now.' '.$timeFormat);
 
         $events = array(); //stock all events to sort them later by time
 
@@ -209,6 +214,7 @@ class jeelogCmd extends cmd {
                 {
                     $cmdType = $log['CmdType'];
                     $displayName = $log['displayName'];
+                    log::add('jeelog', 'debug', 'execute log Cmd, displayName:'.$displayName);
                     $events = $this->getEqActivity($argName, $displayName, $cmdType, $isInversed, $from, $now, $events);
                 }
 
@@ -216,16 +222,20 @@ class jeelogCmd extends cmd {
                 {
                     $sc = scenario::byId($argName);
                     $displayName = $log['displayName'];
+                    log::add('jeelog', 'debug', 'execute log Scenar, displayName:'.$displayName);
                     $events = $this->getScenarioActivity($sc, $displayName, $from, $events);
                 }
             }
         }
         catch (Exception $e)
         {
-            $msg = 'error: '.$e;
-            message::add('JeeLog', 'execute error: '.$msg);
+            $e = print_r($e, 1);
+            log::add('jeelog', 'error', 'execute ERROR: '.$e.' type:'.$type.' argName:'.$argName);
             return true;
         }
+
+        $s = print_r($events, 1);
+        log::add('jeelog', 'debug', 'execute __resulting events__: '.$s);
 
         //sort all of them by time:
         usort($events, array('jeelogCmd','date_compare'));
@@ -235,14 +245,37 @@ class jeelogCmd extends cmd {
         $data = '';
         foreach ($events as $event)
         {
-            $data .= $event[0].' | '.$event[1]."<br>";
+            $date = $event[0];
+            $newDate = date($timeFormat, strtotime($date));
+            $thisData = $newDate.' | '.$event[1];
+            $thisData = filter_var($thisData, FILTER_SANITIZE_STRING);
+            $data .= $thisData.'<br>';
         }
 
         //final log:
+        if ($eqLogic->getConfiguration('showUpdate'))
+        {
+            $now = date($timeFormat);
+            $data = $now.' | //Log mis à jour'.'<br>'.$data;
+        }
+
+        $s = print_r($data, 1);
+        log::add('jeelog', 'debug', 'execute __resulting data to configuration__: '.$s);
+
+        $l = strlen($data);
+        if ($l > 60000)
+        {
+            log::add('jeelog', 'error', 'Donnée de log trop longue pour enregistrement de configuration. Vérifiez les répétitions sur vos historiques.');
+            $eqLogic->setConfiguration('data', '*Error : Trop de répétitions de valeur*');
+            $eqLogic->save();
+            $eqLogic->refreshWidget();
+            return true;
+        }
+
         $eqLogic->setConfiguration('data', $data);
         $eqLogic->save();
-
         $eqLogic->refreshWidget();
+        return true;
     }
 
     public function getEqActivity($cmdId, $name="", $type, $isInversed=false, $from, $now, $events)
@@ -250,9 +283,25 @@ class jeelogCmd extends cmd {
         if ($name == "") $name = cmd::cmdToHumanReadable($cmdId);
         $cmdId = str_replace('#', '', $cmdId);
 
+        $_events = $events;
+
         try
         {
+            log::add('jeelog', 'debug', 'getEqActivity: name:'.$name);
+
+            $isHistorized = cmd::byId($cmdId)->getIsHistorized();
+            log::add('jeelog', 'debug', 'getEqActivity: isHistorized: '.$isHistorized);
+            if ($isHistorized != 1)
+            {
+                log::add('jeelog', 'error', 'getEqActivity ERROR: Commande non historisée: '.$name);
+                return $events;
+            }
+
             $result = history::all($cmdId, $from, $now);
+            $s = print_r($result, 1);
+            log::add('jeelog', 'debug', 'getEqActivity: result:'.$s);
+            if (count($result) == 0 || !is_array($result)) return $_events;
+
             $prevDate = $from;
             $prevValue = null;
             for ($i = 0; $i < count($result); $i++)
@@ -268,32 +317,34 @@ class jeelogCmd extends cmd {
                 {
                     array_push($events, array($date, $name.' | '.$value));
                 }
-              
-              	if (strstr($type, ' | '))
+
+                if (strstr($type, ' | '))
                 {
                   $var = explode(' | ', $type);
                   $states = array($var[0], $var[1]);
                   if ($isInversed) $states = array_reverse($states);
-                  
+
                   if (($type=='Eteint | Allumé') || ($type=='Off | On'))
                   {
                       //Don't report duplicated values 1 or 2 sec after
                       if ((strtotime($date) <= strtotime($prevDate)+60) and ($prevValue == $value)) continue;
                   }
-                  
+
                   if ($value >= 1) array_push($events, array($date, $name.' '.$states[1]));
                   else array_push($events, array($date, $name.' '.$states[0]));
                 }
 
                 $prevDate = $date;
                 $prevValue = $value;
+                $_events = $events;
             }
             return $events;
         }
         catch (Exception $e)
         {
-            message::add('JeeLog', 'getEqActivity Error: '.$e);
-            return $events;
+            $e = print_r($e, 1);
+            log::add('jeelog', 'error', 'getEqActivity ERROR: '.$e);
+            return $_events;
         }
     }
 
@@ -302,10 +353,13 @@ class jeelogCmd extends cmd {
         $scID = $sc->getId();
         if ($name == "") $name = $sc->getHumanName();
 
+        $_events = $events;
+
         try
         {
             //read scenario log:
             $logPath = dirname(__FILE__).'/../../../../log/scenarioLog/scenario'.$scID.'.log';
+            log::add('jeelog', 'debug', 'getScenarioActivity: name:'.$name.' logPath: '.$logPath);
             if (!file_exists($logPath)) return $events;
             $file = fopen($logPath, 'r');
             $data = fread($file, filesize($logPath));
@@ -356,14 +410,16 @@ class jeelogCmd extends cmd {
                     $data = $name.$startedBy;
                     if ($cmdCache != '') $data .= $cmdCache;
                     array_push($events, array($date, $data));
+                    $_events = $events;
                 }
             }
             return $events;
         }
         catch (Exception $e)
         {
-            message::add('JeeLog', 'getScenarioActivity Error: '.$e);
-            return $events;
+            $e = print_r($e, 1);
+            log::add('jeelog', 'error', 'getScenarioActivity ERROR: '.$e);
+            return $_events;
         }
     }
 

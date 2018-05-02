@@ -50,8 +50,28 @@ $("#bt_addScenario").off('click').on( 'click',function () {
     addLog('', 'Scenar')
 })
 
+//Import de commandes:
+$('#bt_importinfos').on('click', function () {
+    $('#md_modal').dialog({title: "{{Importation de commande infos}}"});
+    $('#md_modal').load('index.php?v=d&plugin=jeelog&modal=infos.import&id=' + $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
+});
+$('#bt_import').on('click', function ()
+{
+    $('#md_modal .log').each(function ()
+    {
+        if ($(this).find("#isEnable").prop('checked'))
+        {
+          name = $(this).find("#cmdName").val()
+          addLog(name, 'Cmd')
+        }
+    });
+    $('#md_modal').dialog("close")
+});
+
+
+
 //===========
-function getScenarosList()
+function getScenariosList()
 {
     LIST = []
     LIST.push([0,''])
@@ -87,7 +107,6 @@ function getScenarosList()
     })
     return LIST
 }
-
 
 function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true, _isInversed=false)
 {
@@ -150,7 +169,10 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
                 div += '<option value="'+CMD_TYPE[i]+'">'+CMD_TYPE[i]+'</option>'
             }
         div += '</select>'
-        div += '<label style="padding-left:20px"><input type="checkbox" id="isInversed" class="expressionAttr col-sm-1" data-l1key="options" />Inverser</label>'
+        div += '<div class="col-sm-2">'
+        div += '<input type="checkbox" id="isInversed" class="expressionAttr" data-l1key="options" />'
+        div += '<label class="control-label" style="padding-left:20px">Inverser</label>'
+        div += '</div>'
     }
 
     div += '</div>'
@@ -213,7 +235,7 @@ function printEqLogic(_eqLogic) {
     //console.log(_eqLogic.configuration)
 
     $('#div_logs').empty()
-    SCENARS_LIST = getScenarosList()
+    SCENARS_LIST = getScenariosList()
 
     CMD_TYPE = []
     CMD_TYPE.push("Eteint | Allumé")
