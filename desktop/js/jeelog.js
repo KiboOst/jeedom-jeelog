@@ -108,7 +108,7 @@ function getScenariosList()
     return LIST
 }
 
-function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true, _isInversed=false)
+function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true, _isInversed=false, _noRepeat=false)
 {
     if (_type == 'Scenar') {
         button = 'btn-danger'
@@ -119,17 +119,16 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
 
     var div = '<div class="' + _type + ' log col-sm-12" type="'+_type+'" style="padding-top:5px">'
     div += '<div class="form-group">'
-    div += '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" style="width:20px" title="{{Décocher pour desactiver le log}}" />'
+    div += '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" style="width:12px" title="{{Décocher pour desactiver le log}}" />'
     div += '<div class="col-sm-5">'
 
     if (_type == 'Scenar') {
             div += '<div class="input-group input-group-sm">'
-
             div += '<span class="input-group-btn">'
             div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
             div += '</span>'
-
             div += '<span class="input-group-addon">Scénario</span>'
+            
             div += '<select class="expressionAttr form-control input-sm" style="display:inline-block" id="argName">'
             for(var i in SCENARS_LIST){
                 div += '<option value="'+SCENARS_LIST[i][0]+'">'+SCENARS_LIST[i][1]+'</option>'
@@ -152,27 +151,32 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
             div += '</span>'
 
             div += '<span class="input-group-addon">Info</span>'
-
             div += '<input class="expressionAttr form-control input-sm cmdAction" data-l1key="cmd" id="argName" data-type="' + _type + '" />'
             div += '<span class="input-group-btn">'
             div += '<a class="btn ' + button + ' btn-sm listEquipementInfo" data-type="' + _type + '"><i class="fa fa-list-alt"></i></a>'
             div += '</span>'
+              
             div += '</div>'
-        div += '</div>'
+            div += '</div>'
 
-        div += '<div class="col-sm-2">'
-        div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
-        div += '</div>'
+            div += '<div class="col-sm-2">'
+            div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
+            div += '</div>'
 
-        div += '<select class="input-sm col-sm-2" style="display:inline-block" id="CmdType">'
-        for(var i in CMD_TYPE){
-                div += '<option value="'+CMD_TYPE[i]+'">'+CMD_TYPE[i]+'</option>'
-            }
-        div += '</select>'
-        div += '<div class="col-sm-2">'
-        div += '<input type="checkbox" id="isInversed" class="expressionAttr" data-l1key="options" />'
-        div += '<label class="control-label" style="padding-left:20px">Inverser</label>'
-        div += '</div>'
+            div += '<select class="input-sm col-sm-2" style="display:inline-block" id="CmdType">'
+            for(var i in CMD_TYPE){
+                    div += '<option value="'+CMD_TYPE[i]+'">'+CMD_TYPE[i]+'</option>'
+                }
+            div += '</select>'
+
+            div += '<div class="col-sm-3" style="width:100px; padding-right:0px">'
+            div += '<input type="checkbox" id="isInversed" class="expressionAttr" data-l1key="options" />'
+            div += 'Inverser'
+            div += '</div>'
+            div += '<div class="col-sm-2" style="width:140px; padding-right:0px">'
+            div += '<input type="checkbox" id="noRepeat" class="expressionAttr" data-l1key="options" />'
+            div += 'Ne pas répéter'
+            div += '</div>'
     }
 
     div += '</div>'
@@ -183,6 +187,8 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
     _el.append(div)
 
     //set options:
+    _el.find('.log:last').find("#isEnable").prop('checked', _isEnable)
+      
     if (_type == 'Scenar') {
         if (_argName != "") _el.find('.log:last').find("#argName").val(_argName)
     }
@@ -190,13 +196,9 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
         if (_argName != "") _el.find('.log:last').find("#argName").val(_argName)
         if (_CmdType) _el.find('.log:last').find("#CmdType").val(_CmdType)
         if (_isInversed) _el.find('.log:last').find("#isInversed").prop('checked', _isInversed)
+        if (_noRepeat) _el.find('.log:last').find("#noRepeat").prop('checked', _noRepeat)
     }
     if (_displayName != "") _el.find('.log:last').find("#displayName").val(_displayName)
-      
-    _el.find('.log:last').find("#isEnable").prop('checked', _isEnable)
-
-
-
 }
 
 function saveEqLogic(_eqLogic) {
@@ -216,6 +218,7 @@ function saveEqLogic(_eqLogic) {
             log.displayName = $(this).find("#displayName").val()
             log.isEnable =  $(this).find("#isEnable").prop('checked')
             log.isInversed =  $(this).find("#isInversed").prop('checked')
+            log.noRepeat =  $(this).find("#noRepeat").prop('checked')
             if (log.argName != "") _eqLogic.configuration.logs.push(log)
         }
         if (log.type == 'Scenar')
@@ -251,7 +254,13 @@ function printEqLogic(_eqLogic) {
         _displayName = _eqLogic.configuration.logs[i].displayName
         _isEnable = _eqLogic.configuration.logs[i].isEnable
         _isInversed = _eqLogic.configuration.logs[i].isInversed
-        addLog(_argName, _type, _CmdType, _displayName, _isEnable, _isInversed);
+        try {
+          _noRepeat = _eqLogic.configuration.logs[i].noRepeat
+        }
+        catch(error) {
+          _noRepeat = false
+        }
+        addLog(_argName, _type, _CmdType, _displayName, _isEnable, _isInversed, _noRepeat)
     }
 
     $("#div_logs").sortable();
