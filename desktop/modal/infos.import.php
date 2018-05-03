@@ -30,7 +30,6 @@ if (!isConnect('admin')) {
   $cmds = cmd::all();
   foreach($cmds as $cmd)
   {
-    $type = $cmd->getType();
     if ($cmd->getType() == 'info')
     {
         $name = '#'.$cmd->getHumanName().'#';
