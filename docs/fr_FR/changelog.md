@@ -4,6 +4,7 @@
 
 ### 2018-05-03
 
+  - New : Option 'Ne pas répéter' pour les commandes infos.
   - Bugfix: Erreur si commande ou scénario supprimé dans le log.
 
 ### 2018-05-02
