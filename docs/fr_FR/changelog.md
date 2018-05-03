@@ -2,7 +2,12 @@
 
 *[Documentation](index.md)*
 
+### 2018-05-03
+
+  - Bugfix: Erreur si commande ou scénario supprimé dans le log.
+
 ### 2018-05-02
+
   - Ajout d'une option pour le format de date dans le log (format php).
   - Import infos: bugfix #cmd#
   - Import infos: Ajout d'un champ Rechercher.
