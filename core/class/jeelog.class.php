@@ -214,8 +214,9 @@ class jeelogCmd extends cmd {
                 {
                     $cmdType = $log['CmdType'];
                     $displayName = $log['displayName'];
+                    $noRepeat = $log['noRepeat'];
                     log::add('jeelog', 'debug', 'execute log Cmd, displayName:'.$displayName);
-                    $events = $this->getEqActivity($argName, $displayName, $cmdType, $isInversed, $from, $now, $events);
+                    $events = $this->getEqActivity($argName, $displayName, $cmdType, $isInversed, $noRepeat, $from, $now, $events);
                 }
 
                 if ($type == 'Scenar' AND $isEnable)
@@ -276,7 +277,7 @@ class jeelogCmd extends cmd {
         return true;
     }
 
-    public function getEqActivity($cmdId, $name="", $type, $isInversed=false, $from, $now, $events)
+    public function getEqActivity($cmdId, $name="", $type, $isInversed=false, $noRepeat=false, $from, $now, $events)
     {
         if ($name == "") $name = cmd::cmdToHumanReadable($cmdId);
         $cmdId = str_replace('#', '', $cmdId);
@@ -306,6 +307,8 @@ class jeelogCmd extends cmd {
             for ($i = 0; $i < count($result); $i++)
             {
                 $value = $result[$i]->getValue();
+              	if ($noRepeat && $value == $prevValue) continue;
+
                 $date = $result[$i]->getDatetime();
 
                 if ($type=='Presence')
