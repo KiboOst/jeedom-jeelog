@@ -20,7 +20,7 @@ if (!isConnect('admin')) {
     throw new Exception('{{401 - Accès non autorisé}}');
 }
     echo '<div class="col-sm-12">';
-        echo '<div class="col-sm-11">';
+        echo '<div class="col-sm-10">';
             echo '<input class="form-control" placeholder="{{Rechercher}}" style="margin-bottom:4px;" id="in_searchCmds" onkeyup="filterCmd()"/>';
         echo '</div>';
     echo '<a class="btn btn-success pull-right" id="bt_import" style="margin-bottom:4px;"><i class="fa fa-plus-circle"></i> {{Importer}}</a>';
@@ -41,7 +41,7 @@ if (!isConnect('admin')) {
         $div = '<div class="log col-sm-12" style="display:;padding-top:5px">';
         $div .= '<div class="form-group">';
         $div .= '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" style="width:20px" title="{{Cocher pour importer la commande}}" />';
-        $div .= '<div class="col-sm-10">';
+        $div .= '<div class="col-sm-9">';
         $div .= '<input type="text" class="form-control" id="cmdName"  value="'.$name.'" readonly />';
         $div .= '</div>';
         $div .= '<label>'.$historized.'</label>';
