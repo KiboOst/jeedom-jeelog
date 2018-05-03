@@ -21,9 +21,9 @@ Vous pouvez également paramétrer:
 - Afficher Mise à jour : Ajoute une ligne en haut du log avec l'heure de mise à jour.
 - Le nombre d'heures à afficher. Par défaut, le log affichera l'activité sur les 8 dernières heures.
 - Le format de date en début de chaque ligne du log (au format php):
-    [Doc php](http://php.net/manual/fr/function.date.php)
-    Si vous voulez seulement l'heure en début de ligne de log : H:i:s
-    Pour seulement jour-mois heure : d-m H:i:s
+    - [Doc php](http://php.net/manual/fr/function.date.php)
+    - Si vous voulez seulement l'heure en début de ligne de log : H:i:s
+    - Pour seulement jour-mois heure : d-m H:i:s
 - Les hauteur/largeur des tuiles Dashboard et Vue. Ce qui permet d'avoir une tuile plus grande sur une vue, afin de ne pas prendre trop de place sur le Dashboard.
 
 ### Onglet *Logs*
@@ -37,8 +37,10 @@ Vous retrouvez donc:
 - Une option pour activer ou non cette info/scénario.
 - L'info/scénario à logger.
 - Le nom sous lequel cela apparaitra dans le log.
-- Pour les infos, le type d'info (lumière, porte, etc). Pour des volets, ou le plugin Mode, utilisez Valeur.
-- Pour les infos, une option pour inverse ce type.
+- Pour les commandes info:
+  - Le type d'info (Eteint/Allumé, Fermeture/Ouverture, Presence, Valeur). Pour des volets, ou le plugin Mode, utilisez Valeur.
+  - Une option pour inverser ce type.
+  - Une option pour ne pas répéter la valeur dans le log si elle ne change pas.
 
 Vous pouvez monter/descendre les éléments de cette liste pour plus de clarté (drag/drop).
 
