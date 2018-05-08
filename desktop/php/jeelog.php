@@ -111,7 +111,8 @@ foreach ($eqLogics as $eqLogic) {
           </div>
         </div>
 
-        <br/><br/>
+
+        <hr>
         <div class="form-group expertModeVisible">
           <label class="col-sm-2 control-label">{{Auto-actualisation (cron)}}</label>
           <div class="col-sm-2">
@@ -120,9 +121,13 @@ foreach ($eqLogics as $eqLogic) {
           <div class="col-sm-1">
             <i class="fa fa-question-circle cursor floatright" id="bt_cronGenerator"></i>
           </div>
-          <label class="col-sm-2 control-label">{{Afficher Mise à jour du log}}</label>
-          <div class="col-sm-2">
+          <label class="col-sm-3 control-label">{{Afficher Mise à jour du log}}</label>
+          <div class="col-sm-1">
            <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="showUpdate" checked/>
+          </div>
+          <label class="col-sm-2 control-label">{{Détails des scénarios}}</label>
+          <div class="col-sm-1">
+           <input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="scenarDetails" checked/>
           </div>
         </div>
 
@@ -136,6 +141,7 @@ foreach ($eqLogics as $eqLogic) {
            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="timeFormat" placeholder="Y-m-d H:i:s"/>
           </div>
         </div>
+        <hr>
         
         <div class="form-group expertModeVisible">
           <label class="col-sm-2 control-label">{{Dashboard width/height}}</label>
@@ -154,6 +160,18 @@ foreach ($eqLogics as $eqLogic) {
           </div>
           <div class="col-sm-1">
            <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="viewHeight" placeholder="560"/>
+          </div>
+        </div>
+        
+        <div class="form-group expertModeVisible">
+          <label class="col-sm-2 control-label">{{Design}}</label>
+          <div class="col-sm-4">
+           <label class="control-label">{{Fond (css)}}</label>
+           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="designBckColor" placeholder="rgba(128, 128, 128, 0.8)"/>
+          </div>
+          <div class="col-sm-4">
+           <label class="control-label">{{Texte (css)}}</label>
+           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="designColor" placeholder="rgb(10, 10, 10)"/>
           </div>
         </div>
 
