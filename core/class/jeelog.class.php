@@ -80,7 +80,8 @@ class jeelog extends eqLogic {
 
     }
 
-    public function postSave() {
+    public function postSave()
+    {
         $refresh = $this->getCmd(null, 'refresh');
         if (!is_object($refresh)) {
             $refresh = new jeelogCmd();
@@ -92,8 +93,6 @@ class jeelog extends eqLogic {
         $refresh->setSubType('other');
         $refresh->setEqLogic_id($this->getId());
         $refresh->save();
-
-      //echo $this->getConfiguration();
     }
 
     public function preUpdate() {
@@ -105,7 +104,13 @@ class jeelog extends eqLogic {
     }
 
     public function preRemove() {
-
+      	//delete data file:
+        $eqId = $this->getId();
+        $filePath = dirname(__FILE__).'/../../data/eq'.$eqId.'.txt';
+        if (file_exists($filePath)) {
+          unlink($filePath);
+          log::add('jeelog', 'debug', 'Log file path deleted: '.$filePath);
+        }
     }
 
     public function postRemove() {
@@ -121,12 +126,25 @@ class jeelog extends eqLogic {
         $refresh = $this->getCmd(null, 'refresh');
         $replace['#refresh_id#'] = $refresh->getId();
 
-        $data = $this->getConfiguration('data', 0);
+      	//get data from file:
+        $eqId = $this->getId();
+        $filePath = dirname(__FILE__).'/../../data/eq'.$eqId.'.txt';
+        if (file_exists($filePath)) {
+            $data = file_get_contents($filePath);
+            $data = str_replace("\n", "<br>", $data);
+        } else {
+            $data = "Pas de données récentes";
+        }
         $replace['#jeelogData#'] = $data;
 
         $version = $_version;
+        log::add('jeelog', 'debug', 'toHtml version: '.$version);
 
-        if ($_version == 'dplan') $version = 'dashboard';
+        if ($_version == 'dplan')
+        {
+          $replace['#background-color#'] = $this->getConfiguration('designBckColor', 'rgba(128, 128, 128, 0.8)');
+          $replace['#color#'] = $this->getConfiguration('designColor', 'rgb(10, 10, 10)');
+        }
 
         if ($_version == 'dashboard')
         {
@@ -146,7 +164,6 @@ class jeelog extends eqLogic {
         }
 
         $html = template_replace($replace, getTemplate('core', $version, 'jeelog', 'jeelog'));
-        //cache::set('widgetHtml' . $_version . $this->getId(), $html, 0);
         return $html;
     }
 
@@ -177,19 +194,21 @@ class jeelogCmd extends cmd {
 
     /*
      * Non obligatoire permet de demander de ne pas supprimer les commandes même si elles ne sont pas dans la nouvelle configuration de l'équipement envoyé en JS*/
-    public function dontRemoveCmd() {
+    public function dontRemoveCmd()
+    {
         return true;
     }
 
-
-    public function execute($_options = array()) {
+    public function execute($_options = array())
+    {
         $eqLogic = $this->getEqLogic();
-        $logs = $eqLogic->getConfiguration('logs', "Pas d'activité récente");
+        $logs = $eqLogic->getConfiguration('logs', array());
 
         $logDelta = $eqLogic->getConfiguration('loglasttime', 8);
         $logDelta = $logDelta * 3600;
 
         $timeFormat = $eqLogic->getConfiguration('timeFormat', 'Y-m-d H:i:s');
+        $scenarDetails = $eqLogic->getConfiguration('scenarDetails', 1);
 
         $timezone = 'Europe/Paris';
         $var = new DateTime('NOW', new DateTimeZone($timezone));
@@ -197,10 +216,11 @@ class jeelogCmd extends cmd {
         $from = $var->sub(new DateInterval('PT'.$logDelta.'S'));
         $from = $from->format('Y-m-d H:i:s');
 
+      	$s = print_r($_options, 1);
         log::add('jeelog', 'debug', '______________execute starting '.$from.' '.$now.' '.$timeFormat);
+        log::add('jeelog', 'debug', '______________execute $_options '.$s);
 
         $events = array(); //stock all events to sort them later by time
-
         try
         {
             foreach ($logs as $log)
@@ -225,7 +245,7 @@ class jeelogCmd extends cmd {
                     if (!is_object($sc)) continue;
                     $displayName = $log['displayName'];
                     log::add('jeelog', 'debug', 'execute log Scenar, displayName:'.$displayName);
-                    $events = $this->getScenarioActivity($sc, $displayName, $from, $events);
+                    $events = $this->getScenarioActivity($sc, $displayName, $scenarDetails, $from, $events);
                 }
             }
         }
@@ -251,28 +271,54 @@ class jeelogCmd extends cmd {
             $newDate = date($timeFormat, strtotime($date));
             $thisData = $newDate.' | '.$event[1];
             $thisData = filter_var($thisData, FILTER_SANITIZE_STRING);
-            $data .= $thisData.'<br>';
+            $data .= $thisData."\n";
         }
 
         //final log:
         if ($eqLogic->getConfiguration('showUpdate'))
         {
             $now = date($timeFormat);
-            $data = $now.' | //Log mis à jour'.'<br>'.$data;
+            $data = $now.' | //Log mis à jour'."\n".$data;
         }
 
         $s = print_r($data, 1);
         log::add('jeelog', 'debug', 'execute __resulting data to configuration__: '.$s);
 
-        $l = strlen($data);
-        if ($l > 60000)
+        //write to file:
+        $dataPath = dirname(__FILE__).'/../../data/';
+        if (!is_dir($dataPath))
         {
-            log::add('jeelog', 'error', 'Donnée de log trop longue pour enregistrement de configuration. Vérifiez les répétitions sur vos historiques.');
-            $data = '*Error : Trop de répétitions de valeur*';
+            log::add('jeelog','debug','mkdir data folder');
+          	if (mkdir($dataPath, 0777, true) === false )
+			{
+				log::add('jeelog','error','Impossible de créer le dossier data');
+			}
+		}
+        else
+        {
+          if ( !is_writable($dataPath))
+          {
+            log::add('jeelog','error','Impossible d\'écrire dans le dossier data');
+          }
         }
 
-        $eqLogic->setConfiguration('data', $data);
-        $eqLogic->save();
+      	$eqId = $eqLogic->getId();
+        log::add('jeelog', 'debug', 'eqId: '.$eqId);
+        try
+        {
+          $filePath = $dataPath.'eq'.$eqId.'.txt';
+          log::add('jeelog', 'debug', 'Log file path: '.$filePath);
+          $dataFile = fopen($filePath, 'w');
+          fwrite($dataFile, $data);
+          fclose($dataFile);
+        }
+        catch (Exception $e)
+        {
+          $e = print_r($e, 1);
+          log::add('jeelog', 'error', 'Impossible d\' écrire le fichier de données: '.$e);
+          return false;
+        }
+
         $eqLogic->refreshWidget();
         return true;
     }
@@ -350,7 +396,7 @@ class jeelogCmd extends cmd {
         }
     }
 
-    public function getScenarioActivity($sc, $name="", $from, $events)
+    public function getScenarioActivity($sc, $name="", $details=true, $from, $events)
     {
         $scID = $sc->getId();
         if ($name == "") $name = $sc->getHumanName();
@@ -374,10 +420,10 @@ class jeelogCmd extends cmd {
             $cmdCache = '';
             foreach($lines as $line)
             {
-                if (stripos($line, 'Exécution de la commande') !== false)
+                if (stripos($line, 'Exécution de la commande') !== false AND $details)
                 {
                     $var = explode(' avec', $line)[0];
-                    $cmdCache .= "<br>".str_repeat('&nbsp;', 29).'->'.explode('de la commande ', $var)[1];
+                    $cmdCache .= "\n".str_repeat('&nbsp;', 29).'->'.explode('de la commande ', $var)[1];
                 }
 
                 if (stripos($line, '------------------------------------') !== false) $cmdCache = '';

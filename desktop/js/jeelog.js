@@ -68,8 +68,6 @@ $('#bt_import').on('click', function ()
     $('#md_modal').dialog("close")
 });
 
-
-
 //===========
 function getScenariosList()
 {
@@ -232,7 +230,6 @@ function saveEqLogic(_eqLogic) {
     });
     return _eqLogic
 }
-
 
 function printEqLogic(_eqLogic) {
     //console.log(_eqLogic.configuration)

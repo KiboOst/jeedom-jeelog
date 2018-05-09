@@ -2,6 +2,12 @@
 
 *[Documentation](index.md)*
 
+### 2018-05-08
+
+  - New : Option pour afficher le détail des scénarios.
+  - New : Options de fond et texte css pour les designs (rgba(0,0,0,0) pour fond transparent).
+  - Change : Les données de log sont maintenant enregistrées dans un fichier, et non plus dans la configuration de l'équipement.
+
 ### 2018-05-03
 
   - New : Option 'Ne pas répéter' pour les commandes infos.
