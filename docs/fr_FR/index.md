@@ -13,18 +13,20 @@ Il apparaitra alors dans le menu *Plugins > Monitoring*
 Cliquez simplement sur Ajouter, puis nommez votre équipement log.
 
 <p align="center">
-  <img src="../images/equipement_02.jpg" width="450">
+  <img src="../images/equipement_03.jpg" width="450">
 </p>
 
 Vous pouvez également paramétrer:
 - Un cron d’auto-actualisation.
 - Afficher Mise à jour : Ajoute une ligne en haut du log avec l'heure de mise à jour.
+- Détails des scénarios : Affiche, en plus du déclenchement du scénario, les actions lancées par celui-ci.
 - Le nombre d'heures à afficher. Par défaut, le log affichera l'activité sur les 8 dernières heures.
 - Le format de date en début de chaque ligne du log (au format php):
     - [Doc php](http://php.net/manual/fr/function.date.php)
     - Si vous voulez seulement l'heure en début de ligne de log : H:i:s
     - Pour seulement jour-mois heure : d-m H:i:s
 - Les hauteur/largeur des tuiles Dashboard et Vue. Ce qui permet d'avoir une tuile plus grande sur une vue, afin de ne pas prendre trop de place sur le Dashboard.
+- Les couleurs de fond et de texte au format css pour la tuile Design. Par ex, pour un fond transparent, indiquez rgba(0,0,0,0) !
 
 ### Onglet *Logs*
 
@@ -47,7 +49,7 @@ Vous pouvez monter/descendre les éléments de cette liste pour plus de clarté 
 - Pour que ces commandes apparraissent dans votre log, il faut qu'elles soient historisées sur la période. De la même manière que pour les voir dans *Analyse > Historique*.
 - L'affichage des scénarios se fait par le log de chaque scénario demandé. Si le log est vidé, il n'apparaitra donc plus.
 <p align="center">
-  <img src="../images/logs.jpg" width="450">
+  <img src="../images/jeelog_screenshot1.png" width="450">
 </p>
 
 ## Affichage
