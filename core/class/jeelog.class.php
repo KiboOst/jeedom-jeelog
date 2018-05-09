@@ -120,7 +120,7 @@ class jeelog extends eqLogic {
         $refresh = $this->getCmd(null, 'refresh');
         $replace['#refresh_id#'] = $refresh->getId();
 
-        //get data from file:
+      	//get data from file:
         $eqId = $this->getId();
         $filePath = dirname(__FILE__).'/../../data/eq'.$eqId.'.txt';
         if (file_exists($filePath)) {
@@ -196,7 +196,7 @@ class jeelogCmd extends cmd {
     public function execute($_options = array())
     {
         $eqLogic = $this->getEqLogic();
-        $logs = $eqLogic->getConfiguration('logs', "Pas d'activité récente");
+        $logs = $eqLogic->getConfiguration('logs', array());
 
         $logDelta = $eqLogic->getConfiguration('loglasttime', 8);
         $logDelta = $logDelta * 3600;
@@ -210,7 +210,9 @@ class jeelogCmd extends cmd {
         $from = $var->sub(new DateInterval('PT'.$logDelta.'S'));
         $from = $from->format('Y-m-d H:i:s');
 
+      	$s = print_r($_options, 1);
         log::add('jeelog', 'debug', '______________execute starting '.$from.' '.$now.' '.$timeFormat);
+        log::add('jeelog', 'debug', '______________execute $_options '.$s);
 
         $events = array(); //stock all events to sort them later by time
         try
@@ -281,11 +283,11 @@ class jeelogCmd extends cmd {
         if (!is_dir($dataPath))
         {
             log::add('jeelog','debug','mkdir data folder');
-            if (mkdir($dataPath, 0777, true) === false )
-            {
-                log::add('jeelog','error','Impossible de créer le dossier data');
-            }
-        }
+          	if (mkdir($dataPath, 0777, true) === false )
+			{
+				log::add('jeelog','error','Impossible de créer le dossier data');
+			}
+		}
         else
         {
           if ( !is_writable($dataPath))
@@ -294,7 +296,7 @@ class jeelogCmd extends cmd {
           }
         }
 
-        $eqId = $eqLogic->getId();
+      	$eqId = $eqLogic->getId();
         log::add('jeelog', 'debug', 'eqId: '.$eqId);
         try
         {
@@ -345,7 +347,7 @@ class jeelogCmd extends cmd {
             for ($i = 0; $i < count($result); $i++)
             {
                 $value = $result[$i]->getValue();
-                if ($noRepeat && $value == $prevValue) continue;
+              	if ($noRepeat && $value == $prevValue) continue;
 
                 $date = $result[$i]->getDatetime();
 
