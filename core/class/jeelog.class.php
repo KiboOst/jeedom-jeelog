@@ -104,7 +104,13 @@ class jeelog extends eqLogic {
     }
 
     public function preRemove() {
-
+      	//delete data file:
+        $eqId = $this->getId();
+        $filePath = dirname(__FILE__).'/../../data/eq'.$eqId.'.txt';
+        if (file_exists($filePath)) {
+          unlink($filePath);
+          log::add('jeelog', 'debug', 'Log file path deleted: '.$filePath);
+        }
     }
 
     public function postRemove() {
