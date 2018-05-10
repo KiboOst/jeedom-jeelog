@@ -1,8 +1,13 @@
+
 <img align="right" src="/plugin_info/jeelog_icon.png" width="150">
 
 # JeeLog - Plugin pour Jeedom
 
-Plugin de visualisation globale d'activité Jeedom (équipements / scénarios)
+Log global / Journal Jeedom
+
+Après avoir renseigné les commandes info et scénarios souhaités, vous disposez d’un log global (journal) sur le Dashboard/Vue/Design.
+
+Vous visualisez ainsi, rapidement, ce qu’il c’est passé sur votre Jeedom ces dernières heures: ouverture de porte/volet, allumage de lumière, présence, changement de mode, etc.
 
 ## Configuration du plugin JeeLog
 
@@ -10,7 +15,7 @@ Après installation du plugin, il vous suffit de l’activer.
 Il apparaitra alors dans le menu *Plugins > Monitoring*
 
 ## Ajouter un log
-Cliquez simplement sur Ajouter, puis nommez votre équipement log.
+Cliquez simplement sur *Ajouter*, puis nommez votre équipement log.
 
 <p align="center">
   <img src="../images/equipement_03.jpg" width="450">
@@ -37,7 +42,7 @@ C'est ici que vous allez ajouter les commandes info et les scénarios que vous s
 Vous retrouvez donc:
 - Import infos : Ouvre une fenêtre listant toutes vos commandes infos avec option de recherche, pour en importer plusieurs à la volée.
 - Une option pour activer ou non cette info/scénario.
-- L'info/scénario à logger.
+- L'info/scénario à afficher.
 - Le nom sous lequel cela apparaitra dans le log.
 - Pour les commandes info:
   - Le type d'info (Eteint/Allumé, Fermeture/Ouverture, Presence, Valeur). Pour des volets, ou le plugin Mode, utilisez Valeur.
@@ -46,13 +51,15 @@ Vous retrouvez donc:
 
 Vous pouvez monter/descendre les éléments de cette liste pour plus de clarté (drag/drop).
 
-- Pour que ces commandes apparraissent dans votre log, il faut qu'elles soient historisées sur la période. De la même manière que pour les voir dans *Analyse > Historique*.
+- Pour que ces commandes apparaissent dans votre log, il faut qu'elles soient historisées sur la période. De la même manière que pour les voir dans *Analyse > Historique*.
 - L'affichage des scénarios se fait par le log de chaque scénario demandé. Si le log est vidé, il n'apparaitra donc plus.
 <p align="center">
   <img src="../images/jeelog_screenshot1.png" width="450">
 </p>
 
 ## Affichage
+
+App Mobile: Si vous souhaitez afficher un journal dans l'app mobile, créez un *design* au bon format, ajoutez l'équipement JeeLog sur toute la surface. Vous pouvez également un bouton avec la commande Rafraichir, si l’icône rafraichir est trop petite. Vous aurez ainsi accès au log/journal en plein écran directement dans l'app mobile.
 
 Voici quelques illustrations du résultat, avec les paramètres par défaut.
 
