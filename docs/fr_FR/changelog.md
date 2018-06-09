@@ -3,6 +3,8 @@
 
 *[Documentation](index.md)*
 
+Remarque : en cas de mise à jour non listée ici, c'est que celle-ci ne comporte que des changements mineurs du type documentation ou corrections de bugs mineurs.
+
 ### 2018-05-08
 
   - Ajout d'une option pour afficher le détail des scénarios.
