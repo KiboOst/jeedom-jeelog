@@ -23,8 +23,19 @@ try {
     if (!isConnect('admin')) {
         throw new Exception(__('401 - Accès non autorisé', __FILE__));
     }
-    
+
     ajax::init();
+
+    if (init('action') == 'getLogFiles')
+    {
+        $folder = '../../../../log';
+        $files = array_filter(scandir($folder), function($item) {
+            return !is_dir($folder . $item);
+        });
+        $files = array_diff($files, [".htaccess"]);
+
+        ajax::success($files);
+    }
 
 
 
