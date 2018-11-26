@@ -35,7 +35,7 @@ Vous pouvez également paramétrer:
 
 ### Onglet *Logs*
 
-Une fois l'équipement crée, allez sur l'onglet *Logs* pour paramétrer ce que le log va afficher.
+Une fois l'équipement créé, allez sur l'onglet *Logs* pour paramétrer ce que le log va afficher.
 
 C'est ici que vous allez ajouter les commandes info et les scénarios que vous souhaitez.
 
@@ -56,6 +56,18 @@ Vous pouvez monter/descendre les éléments de cette liste pour plus de clarté 
 <p align="center">
   <img src="../images/jeelog_screenshot1.png" width="450">
 </p>
+
+Vous pouvez également afficher un fichier log de Jeedom.
+
+<p align="center">
+  <img src="../images/logFile.jpg" width="450">
+</p>
+
+Cliquez sur *Ajouter Log*, une élément log apparait alors avec la liste des fichiers log de Jeedom présents. Ce sont les logs de Jeedom dans /html/log.
+
+:exclamation: Si vous ajoutez un fichier de log, toutes les autre commandes et scenarios seront supprimés du log quand vous sauvegarderez celui-ci. En effet, le fonctionnement n'est pas le même, puisque dans ce cas il n'y a pas d'évènement triés par date etc., mais simplement le continu du fichier. Il n'est donc pas possible de mixer des commandes ou scénarios avec des fichiers de log dans le même équipement jeeLog.
+
+Créer un équipement jeeLog avec un fichier de log permet d'afficher ce fichier sur une *vue*, un *design*, et donc aussi dans l'app mobile (avec un *design*) ou la version mobile du dashboard.
 
 ## Affichage
 
