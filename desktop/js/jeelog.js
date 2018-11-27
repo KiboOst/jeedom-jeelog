@@ -59,6 +59,7 @@ $('#bt_importinfos').on('click', function () {
     $('#md_modal').dialog({title: "{{Importation de commande infos}}"});
     $('#md_modal').load('index.php?v=d&plugin=jeelog&modal=infos.import&id=' + $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
 });
+
 $('#bt_import').on('click', function ()
 {
     $('#md_modal .log').each(function ()
@@ -143,7 +144,7 @@ function getLogfilesList()
     return LIST
 }
 
-function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true, _isInversed=false, _noRepeat=false)
+function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true, _isInversed=false, _noRepeat=false, _fileLines=false)
 {
     if (_type == 'Scenar') {
         button = 'btn-danger'
@@ -174,7 +175,11 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
             div += '</div>'
             div += '</div>'
 
-            div += '<div class="col-sm-6">'
+            div += '<div class="col-sm-2">'
+            div += '<input type="text" class="form-control" id="fileLines" placeholder="{{0}}" title="Nombre de lignes, 0 pour le log complet."/>'
+            div += '</div>'
+
+            div += '<div class="col-sm-4">'
             div += '<span class="jqAlert alert-danger">'
                 div += "Warning: Saving will keep only one log file, other entries will be DELETED."
             div += '</span>'
@@ -251,6 +256,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
 
     if (_type == 'Logfile') {
         if (_argName != "") _el.find('.log:last').find("#argName").val(_argName)
+        if (_fileLines) _el.find('.log:last').find("#fileLines").val(_fileLines)
     }
     if (_type == 'Scenar') {
         if (_argName != "") _el.find('.log:last').find("#argName").val(_argName)
@@ -299,6 +305,7 @@ function saveEqLogic(_eqLogic) {
             log = {}
             log.type = 'Logfile'
             log.argName = $(this).find("#argName option:selected").val()
+            log.fileLines = $(this).find("#fileLines").val()
             log.isEnable =  $(this).find("#isEnable").prop('checked')
             _eqLogic.configuration.logs.push(log)
             return _eqLogic
@@ -328,13 +335,14 @@ function printEqLogic(_eqLogic) {
         _displayName = _eqLogic.configuration.logs[i].displayName
         _isEnable = _eqLogic.configuration.logs[i].isEnable
         _isInversed = _eqLogic.configuration.logs[i].isInversed
+        _fileLines = _eqLogic.configuration.logs[i].fileLines
         try {
           _noRepeat = _eqLogic.configuration.logs[i].noRepeat
         }
         catch(error) {
           _noRepeat = false
         }
-        addLog(_argName, _type, _CmdType, _displayName, _isEnable, _isInversed, _noRepeat)
+        addLog(_argName, _type, _CmdType, _displayName, _isEnable, _isInversed, _noRepeat, _fileLines)
     }
 
     $("#div_logs").sortable();
