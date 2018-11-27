@@ -252,7 +252,8 @@ class jeelogCmd extends cmd {
                 if ($type == 'Logfile' AND $isEnable)
                 {
                     log::add('jeelog', 'debug', 'execute log logFile:'.$argName);
-                    $events = $this->getLogFile($argName);
+                    $fileLines = $log['fileLines'];
+                    $events = $this->getLogFile($argName, $fileLines);
                     $_isLogFile_ = True;
                 }
             }
@@ -490,9 +491,10 @@ class jeelogCmd extends cmd {
         }
     }
 
-    public function getLogFile($argName)
+    public function getLogFile($argName, $numLines=0)
     {
         $_events = $events;
+        $numLines = intval($numLines);
 
         $logFile = '../../log/'.$argName;
 
@@ -502,6 +504,12 @@ class jeelogCmd extends cmd {
             $content = file_get_contents($logFile);
             $lines =  explode(PHP_EOL, $content);
             $lines = array_reverse($lines); //recent top
+
+            //limit number of lines:
+            if ($numLines > 0)
+            {
+                $lines = array_slice($lines, 0, $numLines);
+            }
             return $lines;
         }
         catch (Exception $e)
