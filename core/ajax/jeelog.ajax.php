@@ -29,10 +29,10 @@ try {
     if (init('action') == 'getLogFiles')
     {
         $folder = '../../../../log';
-        $files = array_filter(scandir($folder), function($item) {
+        $files = array_filter(scandir($folder), function($item) use ($folder) {
             return !is_dir($folder . $item);
         });
-        $files = array_diff($files, [".htaccess"]);
+        $files = array_diff($files, ['.htaccess', '.', '..']);
 
         ajax::success($files);
     }
