@@ -229,13 +229,13 @@ class jeelogCmd extends cmd {
                 $type = $log['type'];
                 $argName = $log['argName']; //id of cmd info or scenario
                 $isEnable = $log['isEnable'];
-                $isInversed = $log['isInversed'];
 
                 if ($type == 'Cmd' AND $isEnable)
                 {
                     $cmdType = $log['CmdType'];
                     $displayName = $log['displayName'];
                     $noRepeat = $log['noRepeat'];
+                    $isInversed = $log['isInversed'];
                     log::add('jeelog', 'debug', 'execute log Cmd, displayName:'.$displayName);
                     $events = $this->getEqActivity($argName, $displayName, $cmdType, $isInversed, $noRepeat, $from, $now, $events);
                 }
@@ -493,9 +493,7 @@ class jeelogCmd extends cmd {
 
     public function getLogFile($argName, $numLines=0)
     {
-        $_events = $events;
         $numLines = intval($numLines);
-
         $logFile = '../../log/'.$argName;
 
         try
@@ -516,7 +514,7 @@ class jeelogCmd extends cmd {
         {
             $e = print_r($e, 1);
             log::add('jeelog', 'error', 'getScenarioActivity ERROR: '.$e);
-            return $_events;
+            return [];
         }
     }
 
