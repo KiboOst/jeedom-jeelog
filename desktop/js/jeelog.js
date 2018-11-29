@@ -14,6 +14,7 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
+debugMode = false
 
 //? cron:
 $('#bt_cronGenerator').on('click',function(){
@@ -42,15 +43,15 @@ $("body").off('click', '.bt_removeAction').on( 'click', '.bt_removeAction',funct
 })
 
 
-$("#bt_addCmd").off('click').on( 'click',function () {
+$("#bt_addCmd").off('click').on('click',function () {
     addLog('', 'Cmd')
 })
 
-$("#bt_addScenario").off('click').on( 'click',function () {
+$("#bt_addScenario").off('click').on('click',function () {
     addLog('', 'Scenar')
 })
 
-$("#bt_addLogfile").off('click').on( 'click',function () {
+$("#bt_addLogfile").off('click').on('click',function () {
     addLog('', 'Logfile')
 })
 
@@ -271,6 +272,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
 }
 
 function saveEqLogic(_eqLogic) {
+    if (debugMode) console.log('saveEqLogic: _eqLogic', _eqLogic)
     if (!isset(_eqLogic.configuration)) {
         _eqLogic.configuration = {}
     }
@@ -282,6 +284,7 @@ function saveEqLogic(_eqLogic) {
         log.type = $(this).attr('type')
         if (log.type == 'Cmd')
         {
+            if (debugMode) console.log('saveEqLogic: got Cmd')
             log.CmdType = $(this).find("#CmdType option:selected").text()
             log.argName = $(this).find("#argName").val()
             log.displayName = $(this).find("#displayName").val()
@@ -292,7 +295,7 @@ function saveEqLogic(_eqLogic) {
         }
         if (log.type == 'Scenar')
         {
-            delete log.CmdType
+            if (debugMode) console.log('saveEqLogic: got Scenar')
             log.argName = $(this).find("#argName option:selected").val()
             log.displayName = $(this).find("#displayName").val()
             log.isEnable =  $(this).find("#isEnable").prop('checked')
@@ -300,22 +303,19 @@ function saveEqLogic(_eqLogic) {
         }
         if (log.type == 'Logfile')
         {
-            //Delete other commands, only one log file per jeelog !
-            _eqLogic.configuration.logs = []
-            log = {}
-            log.type = 'Logfile'
+            if (debugMode) console.log('saveEqLogic: got Logfile')
             log.argName = $(this).find("#argName option:selected").val()
             log.fileLines = $(this).find("#fileLines").val()
             log.isEnable =  $(this).find("#isEnable").prop('checked')
-            _eqLogic.configuration.logs.push(log)
-            return _eqLogic
+            _eqLogic.configuration.logs = [log]
+            return false //break each function, only one log file per jeelog !
         }
     });
     return _eqLogic
 }
 
 function printEqLogic(_eqLogic) {
-    //console.log(_eqLogic.configuration)
+    if (debugMode) console.log('printEqLogic:', _eqLogic.configuration)
 
     $('#div_logs').empty()
     SCENARS_LIST = getScenariosList()
