@@ -14,6 +14,7 @@
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
  */
 
+debugMode = false
 
 //? cron:
 $('#bt_cronGenerator').on('click',function(){
@@ -42,12 +43,16 @@ $("body").off('click', '.bt_removeAction').on( 'click', '.bt_removeAction',funct
 })
 
 
-$("#bt_addCmd").off('click').on( 'click',function () {
+$("#bt_addCmd").off('click').on('click',function () {
     addLog('', 'Cmd')
 })
 
-$("#bt_addScenario").off('click').on( 'click',function () {
+$("#bt_addScenario").off('click').on('click',function () {
     addLog('', 'Scenar')
+})
+
+$("#bt_addLogfile").off('click').on('click',function () {
+    addLog('', 'Logfile')
 })
 
 //Import de commandes:
@@ -55,6 +60,7 @@ $('#bt_importinfos').on('click', function () {
     $('#md_modal').dialog({title: "{{Importation de commande infos}}"});
     $('#md_modal').load('index.php?v=d&plugin=jeelog&modal=infos.import&id=' + $('.eqLogicAttr[data-l1key=id]').value()).dialog('open');
 });
+
 $('#bt_import').on('click', function ()
 {
     $('#md_modal .log').each(function ()
@@ -106,7 +112,40 @@ function getScenariosList()
     return LIST
 }
 
-function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true, _isInversed=false, _noRepeat=false)
+function getLogfilesList()
+{
+    LIST = []
+    $.ajax({
+        type: "POST",
+        url: "plugins/jeelog/core/ajax/jeelog.ajax.php",
+        data: {
+            action: 'getLogFiles'
+        },
+        dataType: 'json',
+        async: ('function' == typeof(_callback)),
+        global: false,
+        error: function(request, status, error) {
+            handleAjaxError(request, status, error)
+        },
+        success: function(data) {
+            LIST = data.result
+            if (data.state != 'ok') {
+                $('#div_alert').showAlert({
+                    message: data.result,
+                    level: 'danger'
+                })
+                return
+            }
+            if ('function' == typeof(_callback)) {
+                _callback(html)
+                return
+            }
+        }
+    })
+    return LIST
+}
+
+function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEnable=true, _isInversed=false, _noRepeat=false, _fileLines=false)
 {
     if (_type == 'Scenar') {
         button = 'btn-danger'
@@ -120,13 +159,42 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
     div += '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" style="width:12px" title="{{Décocher pour desactiver le log}}" />'
     div += '<div class="col-sm-5">'
 
+    if (_type == 'Logfile') {
+            div += '<div class="input-group input-group-sm">'
+            div += '<span class="input-group-btn">'
+            div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
+            div += '</span>'
+            div += '<span class="input-group-addon">Fichier log</span>'
+
+
+            div += '<select class="expressionAttr form-control input-sm" style="display:inline-block" id="argName">'
+            for(var i in LOGFILES_LIST){
+                div += '<option value="'+LOGFILES_LIST[i]+'">'+LOGFILES_LIST[i]+'</option>'
+            }
+            div += '</select>'
+
+            div += '</div>'
+            div += '</div>'
+
+            div += '<div class="col-sm-2">'
+            div += '<input type="text" class="form-control" id="fileLines" placeholder="{{0}}" title="Nombre de lignes, 0 pour le log complet."/>'
+            div += '</div>'
+
+            div += '<div class="col-sm-4">'
+            div += '<span class="jqAlert alert-danger">'
+                div += "Warning: Saving will keep only one log file, other entries will be DELETED."
+            div += '</span>'
+
+            div += '</div>'
+    }
+
     if (_type == 'Scenar') {
             div += '<div class="input-group input-group-sm">'
             div += '<span class="input-group-btn">'
             div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
             div += '</span>'
             div += '<span class="input-group-addon">Scénario</span>'
-            
+
             div += '<select class="expressionAttr form-control input-sm" style="display:inline-block" id="argName">'
             for(var i in SCENARS_LIST){
                 div += '<option value="'+SCENARS_LIST[i][0]+'">'+SCENARS_LIST[i][1]+'</option>'
@@ -139,7 +207,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
             div += '<div class="col-sm-2">'
             div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
             div += '</div>'
-        div += '</div>'
+            div += '</div>'
     }
 
     if (_type == 'Cmd') {
@@ -153,7 +221,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
             div += '<span class="input-group-btn">'
             div += '<a class="btn ' + button + ' btn-sm listEquipementInfo" data-type="' + _type + '"><i class="fa fa-list-alt"></i></a>'
             div += '</span>'
-              
+
             div += '</div>'
             div += '</div>'
 
@@ -186,7 +254,11 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
 
     //set options:
     _el.find('.log:last').find("#isEnable").prop('checked', _isEnable)
-      
+
+    if (_type == 'Logfile') {
+        if (_argName != "") _el.find('.log:last').find("#argName").val(_argName)
+        if (_fileLines) _el.find('.log:last').find("#fileLines").val(_fileLines)
+    }
     if (_type == 'Scenar') {
         if (_argName != "") _el.find('.log:last').find("#argName").val(_argName)
     }
@@ -200,6 +272,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
 }
 
 function saveEqLogic(_eqLogic) {
+    if (debugMode) console.log('saveEqLogic: _eqLogic', _eqLogic)
     if (!isset(_eqLogic.configuration)) {
         _eqLogic.configuration = {}
     }
@@ -211,6 +284,7 @@ function saveEqLogic(_eqLogic) {
         log.type = $(this).attr('type')
         if (log.type == 'Cmd')
         {
+            if (debugMode) console.log('saveEqLogic: got Cmd')
             log.CmdType = $(this).find("#CmdType option:selected").text()
             log.argName = $(this).find("#argName").val()
             log.displayName = $(this).find("#displayName").val()
@@ -221,21 +295,31 @@ function saveEqLogic(_eqLogic) {
         }
         if (log.type == 'Scenar')
         {
-            delete log.CmdType
+            if (debugMode) console.log('saveEqLogic: got Scenar')
             log.argName = $(this).find("#argName option:selected").val()
             log.displayName = $(this).find("#displayName").val()
             log.isEnable =  $(this).find("#isEnable").prop('checked')
             if (log.argName != 0) _eqLogic.configuration.logs.push(log)
+        }
+        if (log.type == 'Logfile')
+        {
+            if (debugMode) console.log('saveEqLogic: got Logfile')
+            log.argName = $(this).find("#argName option:selected").val()
+            log.fileLines = $(this).find("#fileLines").val()
+            log.isEnable =  $(this).find("#isEnable").prop('checked')
+            _eqLogic.configuration.logs = [log]
+            return false //break each function, only one log file per jeelog !
         }
     });
     return _eqLogic
 }
 
 function printEqLogic(_eqLogic) {
-    //console.log(_eqLogic.configuration)
+    if (debugMode) console.log('printEqLogic:', _eqLogic.configuration)
 
     $('#div_logs').empty()
     SCENARS_LIST = getScenariosList()
+    LOGFILES_LIST = getLogfilesList()
 
     CMD_TYPE = []
     CMD_TYPE.push("Eteint | Allumé")
@@ -251,13 +335,14 @@ function printEqLogic(_eqLogic) {
         _displayName = _eqLogic.configuration.logs[i].displayName
         _isEnable = _eqLogic.configuration.logs[i].isEnable
         _isInversed = _eqLogic.configuration.logs[i].isInversed
+        _fileLines = _eqLogic.configuration.logs[i].fileLines
         try {
           _noRepeat = _eqLogic.configuration.logs[i].noRepeat
         }
         catch(error) {
           _noRepeat = false
         }
-        addLog(_argName, _type, _CmdType, _displayName, _isEnable, _isInversed, _noRepeat)
+        addLog(_argName, _type, _CmdType, _displayName, _isEnable, _isInversed, _noRepeat, _fileLines)
     }
 
     $("#div_logs").sortable();

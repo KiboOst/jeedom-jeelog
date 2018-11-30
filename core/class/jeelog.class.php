@@ -221,6 +221,7 @@ class jeelogCmd extends cmd {
         log::add('jeelog', 'debug', '______________execute $_options '.$s);
 
         $events = array(); //stock all events to sort them later by time
+        $_isLogFile_ = False; //jeelog used to show a log file, do not treat it as array of events!
         try
         {
             foreach ($logs as $log)
@@ -228,13 +229,13 @@ class jeelogCmd extends cmd {
                 $type = $log['type'];
                 $argName = $log['argName']; //id of cmd info or scenario
                 $isEnable = $log['isEnable'];
-                $isInversed = $log['isInversed'];
 
                 if ($type == 'Cmd' AND $isEnable)
                 {
                     $cmdType = $log['CmdType'];
                     $displayName = $log['displayName'];
                     $noRepeat = $log['noRepeat'];
+                    $isInversed = $log['isInversed'];
                     log::add('jeelog', 'debug', 'execute log Cmd, displayName:'.$displayName);
                     $events = $this->getEqActivity($argName, $displayName, $cmdType, $isInversed, $noRepeat, $from, $now, $events);
                 }
@@ -247,6 +248,14 @@ class jeelogCmd extends cmd {
                     log::add('jeelog', 'debug', 'execute log Scenar, displayName:'.$displayName);
                     $events = $this->getScenarioActivity($sc, $displayName, $scenarDetails, $from, $events);
                 }
+
+                if ($type == 'Logfile' AND $isEnable)
+                {
+                    log::add('jeelog', 'debug', 'execute log logFile:'.$argName);
+                    $fileLines = $log['fileLines'];
+                    $events = $this->getLogFile($argName, $fileLines);
+                    $_isLogFile_ = True;
+                }
             }
         }
         catch (Exception $e)
@@ -256,23 +265,37 @@ class jeelogCmd extends cmd {
             return true;
         }
 
+
         $s = print_r($events, 1);
         log::add('jeelog', 'debug', 'execute __resulting events__: '.$s);
 
-        //sort all of them by time:
-        usort($events, array('jeelogCmd','date_compare'));
-        $events = array_reverse($events);
-
-        //create full report:
-        $data = '';
-        foreach ($events as $event)
+        if ($_isLogFile_)
         {
-            $date = $event[0];
-            $newDate = date($timeFormat, strtotime($date));
-            $thisData = $newDate.' | '.$event[1];
-            $thisData = filter_var($thisData, FILTER_SANITIZE_STRING);
-            $data .= $thisData."\n";
+            $data = '';
+            foreach ($events as $line)
+            {
+                $thisData = filter_var($line, FILTER_SANITIZE_STRING);
+                $data .= $thisData."\n";
+            }
         }
+        else
+        {
+            //sort all of them by time:
+            usort($events, array('jeelogCmd','date_compare'));
+            $events = array_reverse($events);
+
+            //create full report:
+            $data = '';
+            foreach ($events as $event)
+            {
+                $date = $event[0];
+                $newDate = date($timeFormat, strtotime($date));
+                $thisData = $newDate.' | '.$event[1];
+                $thisData = filter_var($thisData, FILTER_SANITIZE_STRING);
+                $data .= $thisData."\n";
+            }
+        }
+
 
         //final log:
         if ($eqLogic->getConfiguration('showUpdate'))
@@ -281,19 +304,16 @@ class jeelogCmd extends cmd {
             $data = $now.' | //Log mis à jour'."\n".$data;
         }
 
-        $s = print_r($data, 1);
-        log::add('jeelog', 'debug', 'execute __resulting data to configuration__: '.$s);
-
         //write to file:
         $dataPath = dirname(__FILE__).'/../../data/';
         if (!is_dir($dataPath))
         {
             log::add('jeelog','debug','mkdir data folder');
-          	if (mkdir($dataPath, 0777, true) === false )
-			{
-				log::add('jeelog','error','Impossible de créer le dossier data');
-			}
-		}
+            if (mkdir($dataPath, 0777, true) === false )
+            {
+                log::add('jeelog','error','Impossible de créer le dossier data');
+            }
+        }
         else
         {
           if ( !is_writable($dataPath))
@@ -302,7 +322,7 @@ class jeelogCmd extends cmd {
           }
         }
 
-      	$eqId = $eqLogic->getId();
+        $eqId = $eqLogic->getId();
         log::add('jeelog', 'debug', 'eqId: '.$eqId);
         try
         {
@@ -468,6 +488,33 @@ class jeelogCmd extends cmd {
             $e = print_r($e, 1);
             log::add('jeelog', 'error', 'getScenarioActivity ERROR: '.$e);
             return $_events;
+        }
+    }
+
+    public function getLogFile($argName, $numLines=0)
+    {
+        $numLines = intval($numLines);
+        $logFile = '../../log/'.$argName;
+
+        try
+        {
+            //read log file:
+            $content = file_get_contents($logFile);
+            $lines =  explode(PHP_EOL, $content);
+            $lines = array_reverse($lines); //recent top
+
+            //limit number of lines:
+            if ($numLines > 0)
+            {
+                $lines = array_slice($lines, 0, $numLines);
+            }
+            return $lines;
+        }
+        catch (Exception $e)
+        {
+            $e = print_r($e, 1);
+            log::add('jeelog', 'error', 'getScenarioActivity ERROR: '.$e);
+            return [];
         }
     }
 
