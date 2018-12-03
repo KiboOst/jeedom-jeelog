@@ -16,6 +16,17 @@
 
 debugMode = false
 
+SCENARS_LIST = getScenariosList()
+LOGFILES_LIST = getLogfilesList()
+CMD_TYPE = [
+        "Eteint | Allumé",
+        "Fermeture | Ouverture",
+        "Off | On",
+        "Presence",
+        "Valeur"
+        ]
+
+
 //? cron:
 $('#bt_cronGenerator').on('click',function(){
     jeedom.getCronSelectModal({},function (result) {
@@ -77,6 +88,7 @@ $('#bt_import').on('click', function ()
 //===========
 function getScenariosList()
 {
+    if (debugMode) console.log('getScenariosList')
     LIST = []
     LIST.push([0,''])
     $.ajax({
@@ -93,8 +105,9 @@ function getScenariosList()
             handleAjaxError(request, status, error)
         },
         success: function(data) {
+            LIST = []
             for(var i in data.result){
-                LIST.push([data.result[i].id,data.result[i].humanName])
+                LIST.push([data.result[i].id, data.result[i].humanName])
             }
             if (data.state != 'ok') {
                 $('#div_alert').showAlert({
@@ -114,6 +127,7 @@ function getScenariosList()
 
 function getLogfilesList()
 {
+    if (debugMode) console.log('getLogfilesList')
     LIST = []
     $.ajax({
         type: "POST",
@@ -161,90 +175,91 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
 
     if (_type == 'Logfile') {
             div += '<div class="input-group input-group-sm">'
-            div += '<span class="input-group-btn">'
-            div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
-            div += '</span>'
-            div += '<span class="input-group-addon">Fichier log</span>'
+                div += '<span class="input-group-btn">'
+                    div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
+                div += '</span>'
+                div += '<span class="input-group-addon">Fichier log</span>'
 
 
-            div += '<select class="expressionAttr form-control input-sm" style="display:inline-block" id="argName">'
-            for(var i in LOGFILES_LIST){
-                div += '<option value="'+LOGFILES_LIST[i]+'">'+LOGFILES_LIST[i]+'</option>'
-            }
-            div += '</select>'
+                div += '<select class="expressionAttr form-control input-sm" style="display:inline-block" id="argName">'
+                    for(var i in LOGFILES_LIST){
+                        div += '<option value="'+LOGFILES_LIST[i]+'">'+LOGFILES_LIST[i]+'</option>'
+                    }
+                div += '</select>'
+                div += '</div>'
+                div += '</div>'
 
-            div += '</div>'
-            div += '</div>'
+                div += '<div class="col-sm-2">'
+                    div += '<input type="text" class="form-control" id="fileLines" placeholder="{{0}}" title="Nombre de lignes, 0 pour le log complet."/>'
+                div += '</div>'
 
-            div += '<div class="col-sm-2">'
-            div += '<input type="text" class="form-control" id="fileLines" placeholder="{{0}}" title="Nombre de lignes, 0 pour le log complet."/>'
-            div += '</div>'
-
-            div += '<div class="col-sm-4">'
-            div += '<span class="jqAlert alert-danger">'
-                div += "Warning: Saving will keep only one log file, other entries will be DELETED."
-            div += '</span>'
+                div += '<div class="col-sm-4">'
+                    div += '<span class="jqAlert alert-danger">'
+                        div += "Warning: Saving will keep only one log file, other entries will be DELETED."
+                    div += '</span>'
+                div += '</div>'
 
             div += '</div>'
     }
 
     if (_type == 'Scenar') {
             div += '<div class="input-group input-group-sm">'
-            div += '<span class="input-group-btn">'
-            div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
-            div += '</span>'
-            div += '<span class="input-group-addon">Scénario</span>'
+                div += '<span class="input-group-btn">'
+                    div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
+                div += '</span>'
+                div += '<span class="input-group-addon">Scénario</span>'
 
-            div += '<select class="expressionAttr form-control input-sm" style="display:inline-block" id="argName">'
-            for(var i in SCENARS_LIST){
-                div += '<option value="'+SCENARS_LIST[i][0]+'">'+SCENARS_LIST[i][1]+'</option>'
-            }
-            div += '</select>'
+                div += '<select class="expressionAttr form-control input-sm" style="display:inline-block" id="argName">'
+                    for(var i in SCENARS_LIST){
+                        div += '<option value="'+SCENARS_LIST[i][0]+'">'+SCENARS_LIST[i][1]+'</option>'
+                    }
+                div += '</select>'
+                div += '</div>'
+                div += '</div>'
 
-            div += '</div>'
-            div += '</div>'
-
-            div += '<div class="col-sm-2">'
-            div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
-            div += '</div>'
+                div += '<div class="col-sm-2">'
+                    div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
+                div += '</div>'
             div += '</div>'
     }
 
     if (_type == 'Cmd') {
             div += '<div class="input-group">'
-            div += '<span class="input-group-btn">'
-            div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
-            div += '</span>'
+                div += '<span class="input-group-btn">'
+                    div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
+                div += '</span>'
 
-            div += '<span class="input-group-addon">Info</span>'
-            div += '<input class="expressionAttr form-control input-sm cmdAction" data-l1key="cmd" id="argName" data-type="' + _type + '" />'
-            div += '<span class="input-group-btn">'
-            div += '<a class="btn ' + button + ' btn-sm listEquipementInfo" data-type="' + _type + '"><i class="fa fa-list-alt"></i></a>'
-            div += '</span>'
+                div += '<span class="input-group-addon">Info</span>'
+                div += '<input class="expressionAttr form-control input-sm cmdAction" data-l1key="cmd" id="argName" data-type="' + _type + '" />'
+                div += '<span class="input-group-btn">'
+                    div += '<a class="btn ' + button + ' btn-sm listEquipementInfo" data-type="' + _type + '"><i class="fa fa-list-alt"></i></a>'
+                div += '</span>'
 
-            div += '</div>'
-            div += '</div>'
+                div += '</div>'
+                div += '</div>'
 
-            div += '<div class="col-sm-2">'
-            div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
-            div += '</div>'
+                div += '<div class="col-sm-2">'
+                    div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
+                div += '</div>'
 
-            div += '<select class="input-sm col-sm-2" style="display:inline-block" id="CmdType">'
-            for(var i in CMD_TYPE){
-                    div += '<option value="'+CMD_TYPE[i]+'">'+CMD_TYPE[i]+'</option>'
-                }
-            div += '</select>'
+                div += '<select class="input-sm col-sm-2" style="display:inline-block" id="CmdType">'
+                    for(var i in CMD_TYPE){
+                            div += '<option value="'+CMD_TYPE[i]+'">'+CMD_TYPE[i]+'</option>'
+                        }
+                div += '</select>'
 
-            div += '<div class="col-sm-3" style="width:100px; padding-right:0px">'
-            div += '<input type="checkbox" id="isInversed" class="expressionAttr" data-l1key="options" />'
-            div += 'Inverser'
-            div += '</div>'
-            div += '<div class="col-sm-2" style="width:140px; padding-right:0px">'
-            div += '<input type="checkbox" id="noRepeat" class="expressionAttr" data-l1key="options" />'
-            div += 'Ne pas répéter'
+                div += '<div class="col-sm-3" style="width:100px; padding-right:0px">'
+                    div += '<input type="checkbox" id="isInversed" class="expressionAttr" data-l1key="options" />'
+                    div += 'Inverser'
+                div += '</div>'
+
+                div += '<div class="col-sm-2" style="width:140px; padding-right:0px">'
+                    div += '<input type="checkbox" id="noRepeat" class="expressionAttr" data-l1key="options" />'
+                    div += 'Ne pas répéter'
             div += '</div>'
     }
 
+    div += '</div>'
     div += '</div>'
     div += '</div>'
 
@@ -273,6 +288,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
 
 function saveEqLogic(_eqLogic) {
     if (debugMode) console.log('saveEqLogic: _eqLogic', _eqLogic)
+
     if (!isset(_eqLogic.configuration)) {
         _eqLogic.configuration = {}
     }
@@ -293,6 +309,7 @@ function saveEqLogic(_eqLogic) {
             log.noRepeat =  $(this).find("#noRepeat").prop('checked')
             if (log.argName != "") _eqLogic.configuration.logs.push(log)
         }
+
         if (log.type == 'Scenar')
         {
             if (debugMode) console.log('saveEqLogic: got Scenar')
@@ -301,6 +318,7 @@ function saveEqLogic(_eqLogic) {
             log.isEnable =  $(this).find("#isEnable").prop('checked')
             if (log.argName != 0) _eqLogic.configuration.logs.push(log)
         }
+
         if (log.type == 'Logfile')
         {
             if (debugMode) console.log('saveEqLogic: got Logfile')
@@ -308,42 +326,58 @@ function saveEqLogic(_eqLogic) {
             log.fileLines = $(this).find("#fileLines").val()
             log.isEnable =  $(this).find("#isEnable").prop('checked')
             _eqLogic.configuration.logs = [log]
-            return false //break each function, only one log file per jeelog !
+            //break each function, only one log file per jeelog !
+            return false
         }
     });
     return _eqLogic
 }
 
 function printEqLogic(_eqLogic) {
-    if (debugMode) console.log('printEqLogic:', _eqLogic.configuration)
+    if (debugMode) console.log('printEqLogic:', printEqLogic.caller,  _eqLogic.configuration)
 
     $('#div_logs').empty()
-    SCENARS_LIST = getScenariosList()
-    LOGFILES_LIST = getLogfilesList()
 
-    CMD_TYPE = []
-    CMD_TYPE.push("Eteint | Allumé")
-    CMD_TYPE.push("Fermeture | Ouverture")
-    CMD_TYPE.push("Off | On")
-    CMD_TYPE.push("Presence")
-    CMD_TYPE.push("Valeur")
+    if (isset(_eqLogic.configuration) && isset(_eqLogic.configuration.logs)) {
+        //actionOptions = []
 
-    for (var i in _eqLogic.configuration.logs) {
-        _type = _eqLogic.configuration.logs[i].type
-        _CmdType = _eqLogic.configuration.logs[i].CmdType
-        _argName = _eqLogic.configuration.logs[i].argName
-        _displayName = _eqLogic.configuration.logs[i].displayName
-        _isEnable = _eqLogic.configuration.logs[i].isEnable
-        _isInversed = _eqLogic.configuration.logs[i].isInversed
-        _fileLines = _eqLogic.configuration.logs[i].fileLines
-        try {
-          _noRepeat = _eqLogic.configuration.logs[i].noRepeat
+        for (var i in _eqLogic.configuration.logs) {
+            _type = _eqLogic.configuration.logs[i].type
+            _CmdType = _eqLogic.configuration.logs[i].CmdType
+            _argName = _eqLogic.configuration.logs[i].argName
+            _displayName = _eqLogic.configuration.logs[i].displayName
+            _isEnable = _eqLogic.configuration.logs[i].isEnable
+            _isInversed = _eqLogic.configuration.logs[i].isInversed
+            _fileLines = _eqLogic.configuration.logs[i].fileLines
+            try {
+              _noRepeat = _eqLogic.configuration.logs[i].noRepeat
+            }
+            catch(error) {
+              _noRepeat = false
+            }
+            addLog(_argName, _type, _CmdType, _displayName, _isEnable, _isInversed, _noRepeat, _fileLines)
         }
-        catch(error) {
-          _noRepeat = false
-        }
-        addLog(_argName, _type, _CmdType, _displayName, _isEnable, _isInversed, _noRepeat, _fileLines)
+
+        $("#div_logs").sortable()
+
+        /*
+        jeedom.cmd.displayActionsOption({
+            params: actionOptions,
+            async: false,
+            error: function (error) {
+                $('#div_alert').showAlert({
+                    message: error.message,
+                    level: 'danger'
+                });
+            },
+            success: function (data) {
+                for (var i in data) {
+                    $('#' + data[i].id).append(data[i].html.html);
+                }
+                taAutosize();
+            }
+        });
+        */
+
     }
-
-    $("#div_logs").sortable();
 }
