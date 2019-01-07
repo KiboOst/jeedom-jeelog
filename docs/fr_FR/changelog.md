@@ -42,7 +42,7 @@ Remarque : en cas de mise à jour non listée ici, c'est que celle-ci ne comport
 ### 29/04/2018
 
 - Ajout de l'option *Inverser* pour les commandes.
-- Ajout 'Off | On' pour les commandes.
+- Ajout 'Off / On' pour les commandes.
 - Compatibilité avec les *designs*.
 - Bugfix chemins nginx (merci Nebz !).
 - Bugfix des noms vides sur les infos (affiche le nom de la commande).
