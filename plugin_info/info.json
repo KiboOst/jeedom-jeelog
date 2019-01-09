@@ -1,7 +1,7 @@
 {
 	"id" : "jeelog",
 	"name" : "JeeLog",
-	"description" : "Plugin de visualisation d'activité globale sous forme de journal pour les équipements et scénarios",
+	"description" : "Plugin de journalisation d’activité pour les équipements, scénarios, et fichiers log",
 	"licence" : "AGPL",
 	"author" : "KiboOst",
 	"require" : "3.0",
@@ -9,10 +9,9 @@
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
 	"maxDependancyInstallTime" : 0,
-	"changelog" : "https://kiboost.github.io/jeedom-jeelog/docs/fr_FR/changelog.html",
-	"documentation" : "https://kiboost.github.io/jeedom-jeelog/docs/fr_FR/",
+	"changelog" : "https://kiboost.github.io/jeedom_docs/plugins/jeelog/fr_FR/changelog.html",
+	"documentation" : "https://kiboost.github.io/jeedom_docs/plugins/jeelog/fr_FR/",
 	"language" : ["fr_FR"],
-	"description" : "Plugin pour visualiser ce qui se passe (mouvements, lumières etc) sur les dernières heures.",
 	"compatibility" : ["miniplus","smart","rpi","docker","diy"],
 	"link" : {
 		"forum": "https://www.jeedom.com/forum/viewtopic.php?f=144&t=35997"
