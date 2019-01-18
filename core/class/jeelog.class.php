@@ -138,7 +138,9 @@ class jeelog extends eqLogic {
         $replace['#jeelogData#'] = $data;
 
         $version = $_version;
-        log::add('jeelog', 'debug', 'toHtml version: '.$version);
+        //log::add('jeelog', 'debug', 'toHtml version: '.$version);
+
+        $replace['#category#'] = $this->getPrimaryCategory();
 
         if ($_version == 'dplan')
         {
