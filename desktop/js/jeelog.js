@@ -248,12 +248,12 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
                         }
                 div += '</select>'
 
-                div += '<div class="col-sm-3" style="width:100px; padding-right:0px">'
+                div += '<div class="col-sm-3" style="width:110px; padding-right:0px">'
                     div += '<input type="checkbox" id="isInversed" class="expressionAttr" data-l1key="options" />'
                     div += 'Inverser'
                 div += '</div>'
 
-                div += '<div class="col-sm-2" style="width:140px; padding-right:0px">'
+                div += '<div class="col-sm-2" style="width:160px; padding-right:0px">'
                     div += '<input type="checkbox" id="noRepeat" class="expressionAttr" data-l1key="options" />'
                     div += 'Ne pas répéter'
             div += '</div>'
@@ -359,25 +359,5 @@ function printEqLogic(_eqLogic) {
         }
 
         $("#div_logs").sortable()
-
-        /*
-        jeedom.cmd.displayActionsOption({
-            params: actionOptions,
-            async: false,
-            error: function (error) {
-                $('#div_alert').showAlert({
-                    message: error.message,
-                    level: 'danger'
-                });
-            },
-            success: function (data) {
-                for (var i in data) {
-                    $('#' + data[i].id).append(data[i].html.html);
-                }
-                taAutosize();
-            }
-        });
-        */
-
     }
 }
