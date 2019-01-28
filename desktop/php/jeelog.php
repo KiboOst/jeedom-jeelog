@@ -143,26 +143,6 @@ foreach ($eqLogics as $eqLogic) {
         <hr>
 
         <div class="form-group expertModeVisible">
-          <label class="col-sm-3 control-label">{{Dashboard width/height}}</label>
-          <div class="col-sm-1">
-           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="dashboardWidth" placeholder="360"/>
-          </div>
-          <div class="col-sm-1">
-           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="dashboardHeight" placeholder="144"/>
-          </div>
-        </div>
-
-        <div class="form-group expertModeVisible">
-          <label class="col-sm-3 control-label">{{Vue width/height}}</label>
-          <div class="col-sm-1">
-           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="viewWidth" placeholder="450"/>
-          </div>
-          <div class="col-sm-1">
-           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="viewHeight" placeholder="560"/>
-          </div>
-        </div>
-
-        <div class="form-group expertModeVisible">
           <label class="col-sm-3 control-label">{{Design}}</label>
           <div class="col-sm-3">
            <label class="control-label">{{Fond (css)}}</label>
