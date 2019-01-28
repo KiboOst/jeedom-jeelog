@@ -74,14 +74,26 @@ $('#bt_importinfos').on('click', function () {
 
 $('#bt_import').on('click', function ()
 {
+    //avoid importing same command:
+    __cmd_list = []
+    $('#div_logs .log').each(function () {
+        log = {}
+        log.type = $(this).attr('type')
+        if (log.type == 'Cmd')
+        {
+            log.argName = $(this).find("#argName").val()
+            __cmd_list.push(log.argName);
+        }
+    })
+
     $('#md_modal .log').each(function ()
     {
         if ($(this).find("#isEnable").prop('checked'))
         {
           name = $(this).find("#cmdName").val()
-          addLog(name, 'Cmd')
+          if (__cmd_list.includes(name) == false) addLog(name, 'Cmd')
         }
-    });
+    })
     $('#md_modal').dialog("close")
 });
 
