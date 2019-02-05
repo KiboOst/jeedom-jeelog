@@ -126,6 +126,8 @@ class jeelog extends eqLogic {
         $refresh = $this->getCmd(null, 'refresh');
         $replace['#refresh_id#'] = $refresh->getId();
 
+        $version = jeedom::versionAlias($_version);
+
       	//get data from file:
         $eqId = $this->getId();
         $filePath = dirname(__FILE__).'/../../data/eq'.$eqId.'.txt';
@@ -137,32 +139,20 @@ class jeelog extends eqLogic {
         }
         $replace['#jeelogData#'] = $data;
 
-        $version = $_version;
-        //log::add('jeelog', 'debug', 'toHtml version: '.$version);
+        //$version = $_version;
+        //log::add('jeelog', 'debug', 'toHtml _version: '.$_version.' /alias: '.$version);
 
         $replace['#category#'] = $this->getPrimaryCategory();
 
         if ($_version == 'dplan')
         {
-          $replace['#background-color#'] = $this->getConfiguration('designBckColor', 'rgba(128, 128, 128, 0.8)');
-          $replace['#color#'] = $this->getConfiguration('designColor', 'rgb(10, 10, 10)');
+          $replace['#dplanBkg-color#'] = $this->getConfiguration('designBckColor', 'rgba(128, 128, 128, 0.8)');
+          $replace['#dplan-color#'] = $this->getConfiguration('designColor', 'rgb(10, 10, 10)');
         }
-
-        if ($_version == 'dashboard')
+        else
         {
-          $replace['#width#'] = $this->getConfiguration('dashboardWidth', 360).'px';
-          $replace['#height#'] = $this->getConfiguration('dashboardHeight', 144).'px';
-        }
-        if ($_version == 'dview')
-        {
-          $replace['#width#'] = $this->getConfiguration('viewWidth', 450).'px';
-          $replace['#height#'] = $this->getConfiguration('viewHeight', 560).'px';
-        }
-
-        if ($_version == 'mview')
-        {
-          $replace['#width#'] = '97%; min-width:97%;';
-          $replace['#height#'] = '500px';
+            $replace['#dplanBkg-color#'] = '#background-color#';
+            $replace['#dplan-color#'] = '#color#';
         }
 
         $html = template_replace($replace, getTemplate('core', $version, 'jeelog', 'jeelog'));

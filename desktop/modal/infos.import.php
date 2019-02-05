@@ -39,7 +39,7 @@ if (!isConnect('admin')) {
         
         $div = '<div class="log col-sm-12" style="display:;padding-top:5px">';
         $div .= '<div class="form-group">';
-        $div .= '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" style="width:20px" title="{{Cocher pour importer la commande}}" />';
+        $div .= '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" title="{{Cocher pour importer la commande}}" />';
         $div .= '<div class="col-sm-9">';
         $div .= '<input type="text" class="form-control" id="cmdName"  value="'.$name.'" readonly />';
         $div .= '</div>';

@@ -74,14 +74,26 @@ $('#bt_importinfos').on('click', function () {
 
 $('#bt_import').on('click', function ()
 {
+    //avoid importing same command:
+    __cmd_list = []
+    $('#div_logs .log').each(function () {
+        log = {}
+        log.type = $(this).attr('type')
+        if (log.type == 'Cmd')
+        {
+            log.argName = $(this).find("#argName").val()
+            __cmd_list.push(log.argName);
+        }
+    })
+
     $('#md_modal .log').each(function ()
     {
         if ($(this).find("#isEnable").prop('checked'))
         {
           name = $(this).find("#cmdName").val()
-          addLog(name, 'Cmd')
+          if (__cmd_list.includes(name) == false) addLog(name, 'Cmd')
         }
-    });
+    })
     $('#md_modal').dialog("close")
 });
 
@@ -248,12 +260,12 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
                         }
                 div += '</select>'
 
-                div += '<div class="col-sm-3" style="width:100px; padding-right:0px">'
+                div += '<div class="col-sm-3" style="width:110px; padding-right:0px">'
                     div += '<input type="checkbox" id="isInversed" class="expressionAttr" data-l1key="options" />'
                     div += 'Inverser'
                 div += '</div>'
 
-                div += '<div class="col-sm-2" style="width:140px; padding-right:0px">'
+                div += '<div class="col-sm-2" style="width:160px; padding-right:0px">'
                     div += '<input type="checkbox" id="noRepeat" class="expressionAttr" data-l1key="options" />'
                     div += 'Ne pas répéter'
             div += '</div>'
@@ -359,25 +371,5 @@ function printEqLogic(_eqLogic) {
         }
 
         $("#div_logs").sortable()
-
-        /*
-        jeedom.cmd.displayActionsOption({
-            params: actionOptions,
-            async: false,
-            error: function (error) {
-                $('#div_alert').showAlert({
-                    message: error.message,
-                    level: 'danger'
-                });
-            },
-            success: function (data) {
-                for (var i in data) {
-                    $('#' + data[i].id).append(data[i].html.html);
-                }
-                taAutosize();
-            }
-        });
-        */
-
     }
 }

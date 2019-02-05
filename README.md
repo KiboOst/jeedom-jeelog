@@ -3,6 +3,6 @@
 # jeedom-jeelog
 Plugin de visualisation globale d'activité Jeedom (équipements / scénarios)
 
-*[Documentation](/docs/fr_FR/index.md)*
+*[Documentation](https://kiboost.github.io/jeedom_docs/plugins/jeelog/fr_FR/)*
 
-*[changelog](/docs/fr_FR/changelog.md)*
+*[changelog](https://kiboost.github.io/jeedom_docs/plugins/jeelog/fr_FR/changelog.html)*
