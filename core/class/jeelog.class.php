@@ -146,13 +146,9 @@ class jeelog extends eqLogic {
 
         if ($_version == 'dplan')
         {
-          $replace['#dplanBkg-color#'] = $this->getConfiguration('designBckColor', 'rgba(128, 128, 128, 0.8)');
-          $replace['#dplan-color#'] = $this->getConfiguration('designColor', 'rgb(10, 10, 10)');
-        }
-        else
-        {
-            $replace['#dplanBkg-color#'] = '#background-color#';
-            $replace['#dplan-color#'] = '#color#';
+          $replace['#dplanBkg-color#'] = $this->getConfiguration('designBckColor', 'rgba(128, 128, 128, 0.8)').'!important';
+          $replace['#dplan-color#'] = $this->getConfiguration('designColor', 'rgb(10, 10, 10)').'!important';
+          $version = 'dplan';
         }
 
         $html = template_replace($replace, getTemplate('core', $version, 'jeelog', 'jeelog'));

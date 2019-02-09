@@ -182,7 +182,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
 
     var div = '<div class="' + _type + ' log col-sm-12" type="'+_type+'" style="padding-top:5px">'
     div += '<div class="form-group">'
-    div += '<input type="checkbox" id="isEnable" class="expressionAttr col-sm-1" data-l1key="options" style="width:12px" title="{{Décocher pour desactiver le log}}" />'
+    div += '<input type="checkbox" id="isEnable" class="expressionAttr pull-left" data-l1key="options" title="{{Décocher pour desactiver le log}}" />'
     div += '<div class="col-sm-5">'
 
     if (_type == 'Logfile') {
