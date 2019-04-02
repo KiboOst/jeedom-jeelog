@@ -9,7 +9,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 ?>
 
 <div class="row row-overflow">
-  <div class="col-xs-12 eqLogicThumbnailDisplay" style="padding-left: 25px;">
+  <div class="col-xs-12 eqLogicThumbnailDisplay">
     <legend><i class="fa fa-cog"></i>  {{Gestion}}</legend>
     <div class="eqLogicThumbnailContainer">
         <div class="cursor eqLogicAction success" data-action="add">
@@ -39,7 +39,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
     </div>
   </div>
 
-<div class="col-xs-12 eqLogic" style="padding-left: 25px;display: none;">
+<div class="col-xs-12 eqLogic" style="display: none;">
   <div class="input-group pull-right" style="display:inline-flex">
     <span class="input-group-btn">
       <a class="btn btn-sm btn-default eqLogicAction roundedLeft" data-action="configure"><i class="fa fa-cogs"></i> {{Configuration avancée}}
@@ -154,7 +154,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
       </a><a class="btn btn-success pull-right" id="bt_addLogfile" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Log}}
       </a><a class="btn btn-success pull-right" id="bt_addScenario" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Scenario}}
       </a><a class="btn btn-success pull-right" id="bt_addCmd" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Commande}}</a>
-      <br/><br/>
 
       <div id="div_logs"></div>
     </div>
