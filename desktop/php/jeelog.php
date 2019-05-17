@@ -150,11 +150,14 @@ $eqLogics = eqLogic::byType($plugin->getId());
   </div>
 
     <div role="tabpanel" class="tab-pane" id="logtab">
-      <a class="btn btn-success pull-left" id="bt_importinfos" style="margin-top: 5px;" ><i class="fa fa-cog"></i> {{Import infos}}
-      </a><a class="btn btn-success pull-right" id="bt_addLogfile" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Log}}
-      </a><a class="btn btn-success pull-right" id="bt_addScenario" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Scenario}}
-      </a><a class="btn btn-success pull-right" id="bt_addCmd" style="margin-top: 5px;"><i class="fa fa-plus-circle"></i> {{Ajouter Commande}}</a>
-
+      <a class="btn btn-sm btn-success pull-left" id="bt_importinfos" style="margin-top: 5px;" ><i class="fa fa-cog"></i> {{Import infos}}</a>
+      <div class="input-group pull-right" style="display:inline-flex">
+        <span class="input-group-btn">
+          <a class="btn btn-sm btn-success roundedLeft" id="bt_addLogfile"><i class="fa fa-plus-circle"></i> {{Ajouter Log}}
+          </a><a class="btn btn-sm btn-success" id="bt_addScenario"><i class="fa fa-plus-circle"></i> {{Ajouter Scenario}}
+          </a><a class="btn btn-sm btn-success roundedRight" id="bt_addCmd"><i class="fa fa-plus-circle"></i> {{Ajouter Commande}}</a>
+        </span>
+      </div>
       <div id="div_logs"></div>
     </div>
   </div>
