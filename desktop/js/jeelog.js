@@ -188,7 +188,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
     if (_type == 'Logfile') {
             div += '<div class="input-group input-group-sm">'
                 div += '<span class="input-group-btn">'
-                    div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
+                    div += '<a class="btn btn-default bt_removeAction btn-sm roundedLeft" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
                 div += '</span>'
                 div += '<span class="input-group-addon">Fichier log</span>'
 
@@ -217,7 +217,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
     if (_type == 'Scenar') {
             div += '<div class="input-group input-group-sm">'
                 div += '<span class="input-group-btn">'
-                    div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
+                    div += '<a class="btn btn-default bt_removeAction btn-sm roundedLeft" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
                 div += '</span>'
                 div += '<span class="input-group-addon">Scénario</span>'
 
@@ -238,13 +238,13 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
     if (_type == 'Cmd') {
             div += '<div class="input-group">'
                 div += '<span class="input-group-btn">'
-                    div += '<a class="btn btn-default bt_removeAction btn-sm" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
+                    div += '<a class="btn btn-default bt_removeAction btn-sm roundedLeft" data-type="' + _type + '"><i class="fa fa-minus-circle"></i></a>'
                 div += '</span>'
 
                 div += '<span class="input-group-addon">Info</span>'
                 div += '<input class="expressionAttr form-control input-sm cmdAction" data-l1key="cmd" id="argName" data-type="' + _type + '" />'
                 div += '<span class="input-group-btn">'
-                    div += '<a class="btn ' + button + ' btn-sm listEquipementInfo" data-type="' + _type + '"><i class="fa fa-list-alt"></i></a>'
+                    div += '<a class="btn ' + button + ' btn-sm listEquipementInfo roundedRight" data-type="' + _type + '"><i class="fa fa-list-alt"></i></a>'
                 div += '</span>'
 
                 div += '</div>'
