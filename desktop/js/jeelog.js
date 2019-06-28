@@ -202,7 +202,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
                 div += '</div>'
 
                 div += '<div class="col-sm-2">'
-                    div += '<input type="text" class="form-control" id="fileLines" placeholder="{{0}}" title="Nombre de lignes, 0 pour le log complet."/>'
+                    div += '<input type="text" class="form-control input-sm" id="fileLines" placeholder="{{0}}" title="Nombre de lignes, 0 pour le log complet."/>'
                 div += '</div>'
 
                 div += '<div class="col-sm-4">'
@@ -230,7 +230,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
                 div += '</div>'
 
                 div += '<div class="col-sm-2">'
-                    div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
+                    div += '<input type="text" class="form-control input-sm" id="displayName" placeholder="{{Nom}}" />'
                 div += '</div>'
             div += '</div>'
     }
@@ -251,7 +251,7 @@ function addLog(_argName='', _type='Scenar', _CmdType=null, _displayName, _isEna
                 div += '</div>'
 
                 div += '<div class="col-sm-2">'
-                    div += '<input type="text" class="form-control" id="displayName" placeholder="{{Nom}}" />'
+                    div += '<input type="text" class="form-control input-sm" id="displayName" placeholder="{{Nom}}" />'
                 div += '</div>'
 
                 div += '<select class="input-sm col-sm-2" style="display:inline-block" id="CmdType">'
