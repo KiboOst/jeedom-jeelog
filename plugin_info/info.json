@@ -4,7 +4,7 @@
 	"description" : "Plugin de journalisation d’activité pour les équipements, scénarios, et fichiers log",
 	"licence" : "AGPL",
 	"author" : "KiboOst",
-	"require" : "3.0",
+	"require" : "4.0",
 	"category" : "monitoring",
 	"hasDependency" : false,
 	"hasOwnDeamon" : false,
