@@ -36,12 +36,12 @@ if (!isConnect('admin')) {
         $isHistorized = $cmd->getIsHistorized();
         if ($isHistorized == 1) $historized = 'Historisée';
         else $historized = 'NON Historisée!';
-        
+
         $div = '<div class="log col-sm-12" style="display:;padding-top:5px">';
         $div .= '<div class="form-group">';
         $div .= '<input type="checkbox" id="isEnable" class="expressionAttr pull-left" data-l1key="options" title="{{Cocher pour importer la commande}}" />';
         $div .= '<div class="col-sm-9">';
-        $div .= '<input type="text" class="form-control" id="cmdName"  value="'.$name.'" readonly />';
+        $div .= '<input type="text" class="form-control input-sm" id="cmdName"  value="'.$name.'" readonly />';
         $div .= '</div>';
         $div .= '<label>'.$historized.'</label>';
 
@@ -58,7 +58,7 @@ if (!isConnect('admin')) {
 function filterCmd() {
     input = document.getElementById('in_searchCmds');
     filter = input.value.toUpperCase();
-  
+
     $('#cmdsDisplay .log').each(function ()
     {
         data = $(this).find("#cmdName").val()
@@ -70,9 +70,9 @@ function filterCmd() {
         }
 
     });
-    
+
 }
 </script>
-  
+
 
 <?php include_file('desktop', 'jeelog', 'js', 'jeelog');?>
