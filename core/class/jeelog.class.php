@@ -134,6 +134,7 @@ class jeelog extends eqLogic {
         if (file_exists($filePath)) {
             $data = file_get_contents($filePath);
             $data = str_replace("\n", "<br>", $data);
+          	$data = str_replace("<br><br>", "<br>", $data);
         } else {
             $data = "Pas de données récentes";
         }
@@ -501,7 +502,7 @@ class jeelogCmd extends cmd {
         catch (Exception $e)
         {
             $e = print_r($e, 1);
-            log::add('jeelog', 'error', 'getScenarioActivity ERROR: '.$e);
+            log::add('jeelog', 'error', 'getLogFile ERROR: '.$e);
             return [];
         }
     }
