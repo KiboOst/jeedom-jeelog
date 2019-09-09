@@ -133,18 +133,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
         </div>
         <hr>
 
-        <div class="form-group expertModeVisible">
-          <label class="col-sm-3 control-label">{{Design}}</label>
-          <div class="col-sm-3">
-           <label class="control-label">{{Fond (css)}}</label>
-           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="designBckColor" placeholder="rgba(128, 128, 128, 0.8)"/>
-          </div>
-          <div class="col-sm-3">
-           <label class="control-label">{{Texte (css)}}</label>
-           <input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="designColor" placeholder="rgb(10, 10, 10)"/>
-          </div>
-        </div>
-
       </fieldset>
     </form>
   </div>
