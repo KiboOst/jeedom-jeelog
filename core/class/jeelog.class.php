@@ -366,7 +366,7 @@ class jeelogCmd extends cmd {
 
                 $date = $result[$i]->getDatetime();
 
-                if ($type=='Presence')
+                if ($type=='Présence')
                 {
                     if ($value >= 1) array_push($events, array($date, $type.' '.$name));
                 }
