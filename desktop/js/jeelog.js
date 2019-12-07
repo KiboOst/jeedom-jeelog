@@ -22,7 +22,7 @@ CMD_TYPE = [
         "Eteint | Allumé",
         "Fermeture | Ouverture",
         "Off | On",
-        "Presence",
+        "Présence",
         "Valeur"
         ]
 

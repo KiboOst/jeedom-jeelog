@@ -366,7 +366,7 @@ class jeelogCmd extends cmd {
 
                 $date = $result[$i]->getDatetime();
 
-                if ($type=='Presence')
+                if ($type=='Présence')
                 {
                     if ($value >= 1) array_push($events, array($date, $type.' '.$name));
                 }
@@ -469,6 +469,19 @@ class jeelogCmd extends cmd {
                     array_push($events, array($date, $data));
                     $_events = $events;
                 }
+					
+				// sous tache scenario  AT
+                if (stripos($line, 'Lancement sous tâche') !== false)
+                {
+                    $var = explode(']', $line)[0];
+                    $date = ltrim($var, '[');
+                    if (strtotime($date) < strtotime($from)) return $events; //too old!
+
+                    $data = $name.' | Programmation';
+                    if ($cmdCache != '') $data .= $cmdCache;
+                    array_push($events, array($date, $data));
+                    $_events = $events;
+                }	
             }
             return $events;
         }
