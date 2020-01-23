@@ -278,6 +278,8 @@ class jeelogCmd extends cmd {
             for ($i = 0; $i < count($result); $i++)
             {
                 $value = $result[$i]->getValue();
+                //remove unnecessary trailing 0:
+                $value += 0;
                 if ($noRepeat && $value == $prevValue) continue;
 
                 $date = $result[$i]->getDatetime();
