@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class jeelog extends eqLogic {
 
-    public function logger($str = '', $level = 'debug')
+    public static function logger($str = '', $level = 'debug')
     {
         if (is_array($str)) $str = json_encode($str);
         $function_name = debug_backtrace(false, 2)[1]['function'];
