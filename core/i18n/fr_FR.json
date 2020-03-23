@@ -1,0 +1,51 @@
+{
+    "plugins\/jeelog\/core\/ajax\/jeelog.ajax.php": {
+        "401 - Accès non autorisé": "401 - Accès non autorisé",
+        "Aucune méthode correspondante à : ": "Aucune méthode correspondante à : "
+    },
+    "plugins\/jeelog\/core\/class\/jeelog.class.php": {
+        "Rafraichir": "Rafraichir"
+    },
+    "plugins\/jeelog\/desktop\/js\/jeelog.js": {
+        "Importation de commande infos": "Importation de commande infos",
+        "Décocher pour desactiver le log": "Décocher pour desactiver le log",
+        "0": "0",
+        "Nom": "Nom"
+    },
+    "plugins\/jeelog\/desktop\/modal\/infos.import.php": {
+        "401 - Accès non autorisé": "401 - Accès non autorisé",
+        "Rechercher": "Rechercher",
+        "Importer": "Importer",
+        "Cocher pour importer la commande": "Cocher pour importer la commande"
+    },
+    "plugins\/jeelog\/desktop\/php\/jeelog.php": {
+        "401 - Accès non autorisé": "401 - Accès non autorisé",
+        "Gestion": "Gestion",
+        "Ajouter": "Ajouter",
+        "Configuration": "Configuration",
+        "Mes jeelogs": "Mes jeelogs",
+        "Rechercher": "Rechercher",
+        "Configuration avancée": "Configuration avancée",
+        "Dupliquer": "Dupliquer",
+        "Sauvegarder": "Sauvegarder",
+        "Supprimer": "Supprimer",
+        "Equipement": "Equipement",
+        "Logs": "Logs",
+        "Nom de l'équipement jeelog": "Nom de l'équipement jeelog",
+        "Nom de l'équipement jeelog": "Nom de l'équipement jeelog",
+        "Objet parent": "Objet parent",
+        "Aucun": "Aucun",
+        "Catégorie": "Catégorie",
+        "Activer": "Activer",
+        "Visible": "Visible",
+        "Auto-actualisation (cron)": "Auto-actualisation (cron)",
+        "Afficher Mise à jour du log": "Afficher Mise à jour du log",
+        "Détails des scénarios": "Détails des scénarios",
+        "Afficher (heures)": "Afficher (heures)",
+        "Format de date (php)": "Format de date (php)",
+        "Import infos": "Import infos",
+        "Ajouter Log": "Ajouter Log",
+        "Ajouter Scenario": "Ajouter Scenario",
+        "Ajouter Commande": "Ajouter Commande"
+    }
+}
