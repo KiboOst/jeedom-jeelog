@@ -340,14 +340,24 @@ class jeelogCmd extends cmd {
             $lines =  explode(PHP_EOL, $data);
             $lines = array_reverse($lines); //recent top
 
+            //get translations:
+            $_execOnCmd = translate::sentence('Exécution de la commande ', 'core/class/scenarioExpression.class.php');
+            $_withOptions = translate::sentence(' avec comme option(s) : ', 'core/class/scenarioExpression.class.php');
+            $_onProgrammation = translate::sentence('Scénario exécuté automatiquement sur programmation', 'core/class/scenario.class.php');
+            $_startByScenario = translate::sentence('Lancement provoqué par le scénario  : ', 'core/class/scenarioExpression.class.php');
+            $_startSynchMode = translate::sentence('Lancement du scénario en mode synchrone', 'core/class/scenario.class.php');
+            $_startOnEvent = translate::sentence('Scénario exécuté automatiquement sur événement venant de : ', 'core/class/scenario.class.php');
+            $_startSubTask = translate::sentence('************Lancement sous tâche**************', 'core/class/scenario.class.php');
+            $_startManual = translate::sentence('Scénario lancé manuellement', 'core/ajax/scenario.ajax.php');
+
             //parse scenario log:
             $cmdCache = '';
             foreach($lines as $line)
             {
-                if (stripos($line, 'Exécution de la commande') !== false AND $details)
+                if (stripos($line, $_execOnCmd) !== false AND $details)
                 {
-                    $var = explode(' avec', $line)[0];
-                    $cmdCache .= "\n".str_repeat('&nbsp;', 29).'->'.explode('de la commande ', $var)[1];
+                    $var = explode($_withOptions, $line)[0];
+                    $cmdCache .= "\n".str_repeat('&nbsp;', 29).'->'.explode($_execOnCmd, $var)[1];
                 }
 
                 if (stripos($line, '------------------------------------') !== false) $cmdCache = '';
@@ -361,23 +371,23 @@ class jeelogCmd extends cmd {
                     if (strtotime($date) < strtotime($from)) return $events; //too old!
 
                     $startedBy = '';
-                    if (strstr($line, 'sur programmation')) $startedBy = ' | Programmation';
+                    if (strstr($line, $_onProgrammation)) $startedBy = ' | Programmation';
 
-                    if (strstr($line, 'Lancement provoque par le scenario'))
+                    if (strstr($line, $_startByScenario))
                     {
-                        $var = explode('par le scenario  : ', $line)[1];
+                        $var = explode($_startByScenario, $line)[1];
                         $var = explode("'.", $var)[0];
-                        $startedBy = ' Par scenario: '.$var;
+                        $startedBy = ' By scenario: '.$var;
                     }
-                    else if (strstr($line, 'manuellement')) $startedBy = ' | Manuel';
+                    else if (strstr($line, $_startManual)) $startedBy = ' | Manual';
 
-                    if (strstr($line, 'en mode synchrone')) $startedBy = ' | Synchrone';
+                    if (strstr($line, $_startSynchMode)) $startedBy = ' | Synchronous';
 
-                    if (strstr($line, 'automatiquement sur evenement'))
+                    if (strstr($line, $_startOnEvent))
                     {
-                        $var = explode('evenement venant de : ', $line)[1];
+                        $var = explode($_startOnEvent, $line)[1];
                         $var = explode("'.", $var)[0];
-                        $startedBy = ' Sur evenement: '.$var;
+                        $startedBy = ' On event: '.$var;
                     }
                     $data = $name.$startedBy;
                     if ($cmdCache != '') $data .= $cmdCache;
@@ -386,7 +396,7 @@ class jeelogCmd extends cmd {
                 }
 
                 // sous tache scenario  AT
-                if (stripos($line, 'Lancement sous tâche') !== false)
+                if (stripos($line, $_startSubTask) !== false)
                 {
                     $var = explode(']', $line)[0];
                     $date = ltrim($var, '[');
