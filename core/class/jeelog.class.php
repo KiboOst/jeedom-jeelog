@@ -4,6 +4,8 @@ require_once dirname(__FILE__) . '/../../../../core/php/core.inc.php';
 
 class jeelog extends eqLogic {
 
+    public static $_widgetPossibility = array('custom' => true, 'custom::layout' => false);
+
     public static function logger($str = '', $level = 'debug')
     {
         if (is_array($str)) $str = json_encode($str);
