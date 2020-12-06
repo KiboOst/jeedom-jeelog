@@ -359,11 +359,12 @@ class jeelogCmd extends cmd {
                 if (stripos($line, $_execOnCmd) !== false AND $details)
                 {
                     $var = explode($_withOptions, $line)[0];
-                    $cmdCache .= "\n".str_repeat('&nbsp;', 29).'->'.explode($_execOnCmd, $var)[1];
+                    if (count(explode($_execOnCmd, $var)) == 2) {
+                        $cmdCache .= "\n".str_repeat('&nbsp;', 29).'->'.explode($_execOnCmd, $var)[1];
+                    }
                 }
 
                 if (stripos($line, '------------------------------------') !== false) $cmdCache = '';
-
 
                 //scenario has started:
                 if (stripos($line, '[SCENARIO] Start :') !== false)
