@@ -23,21 +23,20 @@ function jeelog_install() {
 }
 
 function jeelog_update() {
-    //remove old way of saving full log:
-    try
-    {
-	    $eqs = eqLogic::byType('jeelog');
-	  	foreach ($eqs as $eq)
-	    {
+	//remove old way of saving full log:
+	try
+	{
+		$eqs = eqLogic::byType('jeelog');
+		foreach ($eqs as $eq)
+		{
 			$eq->setConfiguration('data', null);
-	        $eq->save();
+			$eq->save();
 		}
 	}
 	catch (Exception $e)
-    {
-        $e = print_r($e, 1);
-        log::add('jeelog', 'error', 'jeelog_update ERROR: '.$e);
-    }
+	{
+		log::add('jeelog', 'error', 'jeelog_update ERROR: '.$e->getMessage());
+	}
 
 }
 

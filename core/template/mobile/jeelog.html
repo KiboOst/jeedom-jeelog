@@ -1,9 +1,15 @@
 <div class="eqLogic eqLogic-widget #eqLogic_class# #class#" style="height:#height#; width:#width#; text-align:left!important; background-color:#background-color#; color:#color#; #style#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-category="#category#">
-  <span class="statusCmd"></span>
   <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
-		<i class="fas fa-sync"></i>
+    <i class="fas fa-sync"></i>
   </span>
-  <center class="widget-name" style="#hideEqLogicName#">#name_display#</center>
+  <center>
+    <span class="widget-name">
+      <span class="warning" title="#alert_name#">
+        <i class='#alert_icon#'></i>
+      </span>
+      <span>#name_display# <span class="object_name">#object_name#</span></span><br/>
+    </span>
+  </center>
 
   <div style="padding:2px 0 0 3px; margin:0;height: calc(100% - 24px);position:relative">
     <p class="state" style="font-size:12px!important; line-height:12px!important; height: calc(100% - 24px); overflow-y:scroll; scrollbar-width:none;">#jeelogData#</p>
