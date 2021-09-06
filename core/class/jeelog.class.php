@@ -299,7 +299,7 @@ class jeelogCmd extends cmd {
                   $states = array($var[0], $var[1]);
                   if ($isInversed) $states = array_reverse($states);
 
-                  if (($type=='Eteint | Allumé') || ($type=='Off | On'))
+                  if (($type=='Absent | Présent') || ($type=='Eteint | Allumé') || ($type=='Off | On'))
                   {
                       //Don't report duplicated values 1 or 2 sec after
                       if ((strtotime($date) <= strtotime($prevDate)+60) and ($prevValue == $value)) continue;
