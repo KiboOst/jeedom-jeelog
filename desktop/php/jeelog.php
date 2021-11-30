@@ -40,7 +40,18 @@ $eqLogics = eqLogic::byType($plugin->getId());
           $div .= '<img src="' . $plugin->getPathImgIcon() . '"/>';
           $div .= '<br>';
           $div .= '<span class="name">' . $eqLogic->getHumanName(true, true) . '</span>';
-          $div .= '<span class="hidden hiddenAsCard displayTableRight">'.$eqLogic->getConfiguration('autorefresh').' | '.$eqLogic->getConfiguration('loglasttime').'h</span>';
+
+          $div .= '<span class="hidden hiddenAsCard displayTableRight"><span>'.$eqLogic->getConfiguration('autorefresh').' | '.$eqLogic->getConfiguration('loglasttime').'h</span>';
+          $cats = $eqLogic->getCategory();
+          unset($cats['default']);
+          $div .= '<span> ' . implode(array_keys($cats, 1), ', ') . '</span>';
+          if ($eqLogic->getIsVisible() == 1) {
+            $div .= ' <i class="fas fa-eye"></i>';
+          } else {
+            $div .= ' <i class="fas fa-eye-slash"></i>';
+          }
+          $div .= '</span>';
+
           $div .= '</div>';
           echo $div;
         }
