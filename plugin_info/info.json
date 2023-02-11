@@ -13,7 +13,4 @@
 	"documentation" : "https://kiboost.github.io/jeedom_docs/plugins/jeelog/fr_FR/",
 	"language" : ["fr_FR"],
 	"compatibility" : ["miniplus","smart","rpi","docker","diy"],
-	"link" : {
-		"forum": "https://www.jeedom.com/forum/viewtopic.php?f=144&t=35997"
-	}
 }
