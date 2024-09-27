@@ -360,10 +360,15 @@ class jeelogCmd extends cmd {
                 {
                     $var = explode($_withOptions, $line)[0];
                     if (count(explode($_execOnCmd, $var)) == 2) {
-                        $cmdCache .= "\n".str_repeat('&nbsp;', 29).'->'.explode($_execOnCmd, $var)[1];
+                        $cmdCache .= "\n".str_repeat('&nbsp;', 29).'╚►'.explode($_execOnCmd, $var)[1];
                     }
                 }
 
+                if (stripos($line, '[SCENARIO] Log :') !== false AND $details)
+                {
+                        $cmdCache .= "\n".str_repeat('&nbsp;', 14).'╚►'.explode('[SCENARIO] Log : ', $line)[1];
+                }
+                   
                 if (stripos($line, '------------------------------------') !== false) $cmdCache = '';
 
                 //scenario has started:
