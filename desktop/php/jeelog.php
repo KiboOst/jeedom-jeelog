@@ -44,7 +44,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
           $div .= '<span class="hidden hiddenAsCard displayTableRight"><span>'.$eqLogic->getConfiguration('autorefresh').' | '.$eqLogic->getConfiguration('loglasttime').'h</span>';
           $cats = $eqLogic->getCategory();
           unset($cats['default']);
-          $div .= '<span> ' . implode(array_keys($cats, 1), ', ') . '</span>';
+          $div .= '<span> ' . implode(', ', array_keys($cats, 1)) . '</span>';
           if ($eqLogic->getIsVisible() == 1) {
             $div .= ' <i class="fas fa-eye"></i>';
           } else {
