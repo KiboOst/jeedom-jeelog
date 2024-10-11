@@ -43,7 +43,7 @@ $("body").off('click','.listEquipementInfo').on( 'click','.listEquipementInfo', 
         el.value(result.human)
         jeedom.cmd.displayActionOption(el.value(), '', function (html) {
             el.closest('.' + type).find('.logOptions').html(html)
-            taAutosize()
+            jeedomUtils.taAutosize()
         })
     })
 })
