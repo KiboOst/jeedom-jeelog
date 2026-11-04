@@ -9,9 +9,10 @@ class jeelog extends eqLogic {
     public static function logger($str = '', $level = 'debug')
     {
         if (is_array($str)) $str = json_encode($str);
-        $function_name = debug_backtrace(false, 2)[1]['function'];
-        $class_name = debug_backtrace(false, 2)[1]['class'];
-        $msg = '['.$class_name.'] <'. $function_name .'> '.$str;
+        $trace = debug_backtrace(false, 2)[1] ?? [];
+        $function_name = $trace['function'] ?? 'unknown';
+        $class_name = $trace['class'] ?? '';
+        $msg = '['.$class_name.'] '. $function_name .'() > '.$str;
         log::add('jeelog', $level, $msg);
     }
 
@@ -362,6 +363,11 @@ class jeelogCmd extends cmd {
                     if (count(explode($_execOnCmd, $var)) == 2) {
                         $cmdCache .= "\n".str_repeat('&nbsp;', 29).'->'.explode($_execOnCmd, $var)[1];
                     }
+                }
+
+                if (stripos($line, '[SCENARIO] Log :') !== false AND $details)
+                {
+                        $cmdCache .= "\n".str_repeat('&nbsp;', 14).'->'.explode('[SCENARIO] Log : ', $line)[1];
                 }
 
                 if (stripos($line, '------------------------------------') !== false) $cmdCache = '';
